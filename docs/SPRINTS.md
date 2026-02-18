@@ -5,7 +5,7 @@
 | Sprint | Nom                    | Semaines | Statut |
 | ------ | ---------------------- | -------- | ------ |
 | 1      | Fondations             | 1-2      | ✅ DONE |
-| 2      | Moteur de Jeu          | 3-4      | � WIP |
+| 2      | Moteur de Jeu          | 3-4      | ✅ DONE |
 | 3      | Économie & Vote        | 5-6      | 🔲 TODO |
 | 4      | Social & Polish        | 7-8      | 🔲 TODO |
 
@@ -81,28 +81,28 @@ Recherche Spotify, création/assignation de Pods, soumission de titres.
 - [x] Composant `<TrackCard>` : affiche un titre avec bouton "Écouter sur Spotify" (deep link)
 
 #### S2-02 : Système de Thèmes Hebdomadaires
-- [ ] Table `weekly_themes` déjà créée (Sprint 1)
-- [ ] Page admin basique pour créer un thème (protégée par rôle)
-- [ ] Edge Function CRON : changer le statut du thème selon l'heure (voir `PHASES.md`)
-- [ ] API : `GET /api/theme/current` retourne le thème actif
+- [x] Table `weekly_themes` déjà créée (Sprint 1)
+- [x] Page admin basique pour créer un thème (protégée par rôle)
+- [x] Edge Function CRON : changer le statut du thème selon l'heure (voir `PHASES.md`)
+- [x] API : `GET /api/theme/current` retourne le thème actif
 
 #### S2-03 : Matchmaking & Pods
-- [ ] Endpoint `/api/pods/join` : assigner l'utilisateur au premier Pod non plein (< 7 joueurs)
-- [ ] Si aucun Pod dispo → en créer un nouveau
-- [ ] Vérification : un user ne peut rejoindre qu'un seul Pod par semaine
-- [ ] Page `/game/pod` : affiche les 7 slots (avatar + nom ou "En attente...")
+- [x] Endpoint `/api/pods/join` : assigner l'utilisateur au premier Pod non plein (< 7 joueurs)
+- [x] Si aucun Pod dispo → en créer un nouveau
+- [x] Vérification : un user ne peut rejoindre qu'un seul Pod par semaine
+- [x] Page `/game/pod` : affiche les 7 slots (avatar + nom ou "En attente...")
 
 #### S2-04 : Soumission de Titre
-- [ ] Endpoint `/api/submissions/create` : enregistrer le titre choisi
-- [ ] Validations Zod : trackId existe, user est dans un Pod, titre pas déjà pris dans le Pod
-- [ ] Interface : dans la page Pod, zone de recherche + bouton "Soumettre"
-- [ ] Une fois soumis → le slot du joueur affiche son titre avec pochette
+- [x] Endpoint `/api/submissions/create` : enregistrer le titre choisi
+- [x] Validations Zod : trackId existe, user est dans un Pod, titre pas déjà pris dans le Pod
+- [x] Interface : dans la page Pod, zone de recherche + bouton "Soumettre"
+- [x] Une fois soumis → le slot du joueur affiche son titre avec pochette
 
 #### S2-05 : Guards Temporels
-- [ ] Middleware/helper `isWeekendActive()` qui vérifie si on est dans le créneau autorisé
-- [ ] Bloquer toutes les routes `/game/*` hors créneau
-- [ ] Afficher un message "Revenez vendredi 19h" si accès hors créneau
-- [ ] Variable d'env `FORCE_WEEKEND=true` pour le développement local
+- [x] Middleware/helper `isWeekendActive()` qui vérifie si on est dans le créneau autorisé
+- [x] Bloquer toutes les routes `/game/*` hors créneau
+- [x] Afficher un message "Revenez vendredi 19h" si accès hors créneau
+- [x] Variable d'env `FORCE_WEEKEND=true` pour le développement local
 
 ---
 

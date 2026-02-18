@@ -101,6 +101,17 @@
 - [x] Trigger `on_auth_user_created` fonctionnel
 - [x] Security Advisors vérifiés (0 warnings)
 
+### Sprint 2 : Cœur du Jeu & Matchmaking
+- [x] **S2-01 : Profil Spotify Étendu** (Bio, Genre, Top Artists)
+- [x] **S2-02 : Système de Thèmes Hebdomadaires** (Admin UI + Status logic)
+- [x] **S2-03 : Matchmaking Multi-Pod** (Algorithme de répartition fluide)
+- [x] **S2-04 : Soumission de Titre** (Server Action + Recherche Spotify)
+- [x] **S2-05 : Guards Temporels (Weekend-Only)**
+  - Utilitaire `src/lib/utils/weekend.ts` pour la gestion du cycle.
+  - Middleware bloquant `/game/*` hors weekend.
+  - Home Page dynamique (Countdown vs CTA).
+  - Support de `FORCE_WEEKEND=true` pour le dev.
+
 ### Auth
 - [x] Login Spotify fonctionnel (S1-03)
 - [x] Callback handler
@@ -111,7 +122,7 @@
 - [x] Recherche Spotify fonctionnelle
 - [x] Création/Assignation de Pod
 - [x] Soumission de titre
-- [ ] Staking
+- [/] Staking
 - [ ] Résolution (Engine)
 
 ### UI/UX

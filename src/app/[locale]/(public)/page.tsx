@@ -7,6 +7,7 @@ import { Countdown } from "@/components/ui/countdown";
 import { Card } from "@/components/ui/card";
 
 import { createClient as createServerClient } from "@/lib/supabase/server";
+import { getNextDropDate, isWeekendActive } from "@/lib/utils/weekend";
 
 export default async function HomePage() {
   const t = await getTranslations("home");
@@ -15,9 +16,6 @@ export default async function HomePage() {
   const supabase = createServerClient();
   
   // Logic to find current/next theme (same as API logic, allowing code reuse if extracted)
-  // For now duplicate valid logic for speed or verify if API allows internal call? 
-  // Direct DB access is better here.
-  
   let { data: theme } = await (await supabase)
     .from("weekly_themes")
     .select("*")
@@ -37,37 +35,9 @@ export default async function HomePage() {
      theme = upcoming;
   }
 
-  // Determine target date based on status
-  // - Upcoming -> opens at Friday 19h (opened_at or calc from week_number?)
-  // - Open -> locks at Sunday 12h
-  // - Locked -> resolves at Sunday 19h
-  // - Resolving -> finished
-  
-  // For MVP, we use the fields if set, or fallback to manual admin trigger concept.
-  // Actually, S2-02 says "Theme Status Logic (Time-based or Manual)". 
-  // If manual, we might not have a precise target date unless we set it.
-  // But let's assume standard schedule for the countdown visual.
-  // Friday 19:00 Paris = Upcoming Target
-  // Sunday 12:00 Paris = Open Target
-  // Sunday 19:00 Paris = Locked Target
-  
-  // Simple heuristic for visual "target":
-  // If upcoming => Count to Fri 19h of that week
-  // If open => Count to Sun 12h
-  // If locked => Count to Sun 19h
-
-  let targetDate: Date | undefined;
-  let statusKey = "upcoming";
-
-  if (theme) {
-    statusKey = (theme as any).status; 
-    // We need a helper to calculate dates from week_number/year if fields are null.
-    // For now, if opened_at/locked_at are null, show generic or "Soon".
-    // But let's try to use the timestamp if available?
-    // Actually, we can just say:
-    // Upcoming -> "Next Drop in..."
-    // Open -> "Submissions close in..."
-  }
+  const isWeekend = isWeekendActive();
+  const nextDropDate = getNextDropDate();
+  const statusKey = (theme as any)?.status || "upcoming";
 
   return (
     <main className="flex flex-col items-center justify-center p-4 min-h-[80vh] text-center space-y-12">
@@ -104,12 +74,21 @@ export default async function HomePage() {
         )}
 
         <div className="relative pt-4 flex flex-col sm:flex-row items-center justify-center gap-6">
-          <Link href="/game/pod">
-            <Button size="lg" className="text-lg px-8 py-6 h-auto shadow-xl shadow-primary-500/20 hover:shadow-primary-500/40">
-              {(theme as any)?.status === 'open' ? t("cta.participate") : t("countdown.join")}
-              <ArrowRight className="ml-2 w-6 h-6" />
-            </Button>
-          </Link>
+          {isWeekend ? (
+            <Link href="/game/pod">
+              <Button size="lg" className="text-lg px-8 py-6 h-auto shadow-xl shadow-primary-500/20 hover:shadow-primary-500/40">
+                {t("cta.participate")}
+                <ArrowRight className="ml-2 w-6 h-6" />
+              </Button>
+            </Link>
+          ) : (
+            <div className="flex flex-col items-center gap-2">
+                <span className="text-slate-500 uppercase tracking-widest text-sm font-bold">
+                    {t("countdown.title")}
+                </span>
+                <Countdown targetDate={nextDropDate} />
+            </div>
+          )}
           
           <Link href="/results">
             <Button variant="ghost" size="lg" className="text-slate-400 hover:text-white text-lg h-auto px-8 py-6">
@@ -119,16 +98,28 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Countdown */}
-      <div className="w-full max-w-xl relative z-10">
-        <div className="text-center mb-6">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500">
-             {(theme as any)?.status === 'open' ? t("countdown.live") : t("countdown.title")}
-          </h2>
-        </div>
-        {/* We pass a fixed date for now or null to show zeros, as logic to calc exact date from week number is complex without a helper library like date-fns */}
-        <Countdown className="gap-4 md:gap-8" targetDate={undefined} /> 
-      </div>
+      {/* Secondary Countdown if Weekend is active (showing time left to close?) 
+          Or just hide it if shown in Hero? 
+          For now, if weekend, we hide the secondary countdown block to avoid duplication if we moved it to hero.
+          Actually, the design shows Countdown below Hero usually.
+          Let's keep the structure simple:
+          If Weekend -> Hero has CTA. Below is "Time left to submit" ?
+          If Not Weekend -> Hero has Countdown.
+      */}
+      
+      {isWeekend && (
+          <div className="w-full max-w-xl relative z-10">
+            <div className="text-center mb-6">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500">
+                 {t("countdown.live")}
+              </h2>
+            </div>
+             {/* Target 12h Sunday for now - hardcoded helper or logic? 
+                 Let's just show Sunday 12h of this week.
+             */}
+             <Countdown targetDate={new Date(new Date().setDate(new Date().getDate() + (7 - new Date().getDay()))) /* Simplified for MVP visual */} /> 
+          </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-7xl px-4">

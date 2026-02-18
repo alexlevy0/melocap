@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 interface CountdownProps extends React.HTMLAttributes<HTMLDivElement> {
-  targetDate?: Date; // Optional, defaults to next Friday 19h if not set (logic to be added later)
+  targetDate?: Date;
 }
 
 export function Countdown({ className, targetDate, ...props }: CountdownProps) {

@@ -39,16 +39,35 @@ export async function updateSession(request: NextRequest, response: NextResponse
   });
 
   // Protect /game/* routes — redirect to login if not authenticated
-  const isGameRoute = request.nextUrl.pathname.match(/\/game\//);
-  if (isGameRoute && !user) {
-    const url = request.nextUrl.clone();
-    const nextPath = url.pathname;
-    const locale = nextPath.split("/")[1];
-    
-    url.pathname = `/${locale}/login`;
-    url.searchParams.set("next", nextPath);
-    
-    return NextResponse.redirect(url);
+  const isGameRoute = /\/game\//.test(request.nextUrl.pathname);
+  const locale = request.nextUrl.pathname.split("/")[1];
+
+  if (isGameRoute) {
+     // 1. Auth Check
+     if (!user) {
+        const url = request.nextUrl.clone();
+        const nextPath = url.pathname;
+        
+        url.pathname = `/${locale}/login`;
+        url.searchParams.set("next", nextPath);
+        
+        return NextResponse.redirect(url);
+     }
+
+     // 2. Weekend Check (S2-05)
+     // Dynamically import to ensure fresh evaluation or just use the utility
+     // Note: In middleware we might face issues with environment variables if not bundled correctly, 
+     // but utility functions are standard.
+     const { isWeekendActive } = await import("@/lib/utils/weekend");
+     
+     if (!isWeekendActive()) {
+         // Redirect to home with a query param or just home
+         const url = request.nextUrl.clone();
+         url.pathname = `/${locale}`;
+         // Optional: Add a query param to show a toast "come back later"
+         // url.searchParams.set("error", "weekend_only");
+         return NextResponse.redirect(url);
+     }
   }
 
   return response;
