@@ -27,6 +27,11 @@
     "theme": {
       "upcoming": "Prochain Thème",
       "current": "Thème Actuel"
+    },
+    "stats": {
+      "players": "Joueurs",
+      "tracks": "Titres",
+      "coins": "MeloCoins"
     }
   },
   "leaderboard": {
@@ -84,9 +89,17 @@
     },
     "status": {
       "open": "La Fièvre — Soumissions ouvertes",
-      "locked": "Les jeux sont faits !",
+      "locked": "Soumissions fermées",
       "resolving": "Résolution en cours...",
-      "finished": "Résultats disponibles"
+      "finished": "Résultats disponibles",
+      "opening_soon": "Ouverture prochaine"
+    },
+    "no_active_theme": "Il n'y a pas de thème actif pour le moment. Reviens plus tard pour le prochain drop !",
+    "submit": {
+      "success": "Titre soumis avec succès !",
+      "selected_track": "Titre sélectionné",
+      "description": "Recherche un titre sur Spotify pour le soumettre à ton Pod.",
+      "submitting": "Envoi..."
     }
   },
   "game": {
@@ -98,7 +111,18 @@
     "title": "Mon Profil",
     "wallet": "MeloCoins",
     "reputation": "Score de Réputation",
-    "history": "Historique des prédictions",
+    "history": {
+      "title": "Historique des prédictions",
+      "curated": "Déniché le {date}"
+    },
+    "badges": {
+      "title": "Badges débloqués"
+    },
+    "stats": {
+      "success": "Succès",
+      "pods": "Pods"
+    },
+    "level": "Expert Niveau {level}",
     "edit": "Modifier le profil"
   },
   "coins": {
@@ -115,18 +139,47 @@
     "alreadyInPod": "Tu es déjà dans un Pod cette semaine.",
     "trackAlreadyTaken": "Ce titre est déjà soumis dans ton Pod.",
     "insufficientCoins": "Solde insuffisant en MeloCoins.",
-    "weekendOnly": "Cette action n'est disponible que le week-end."
+    "weekendOnly": "Cette action n'est disponible que le week-end.",
+    "submitFailed": "Échec de la soumission du titre."
   },
   "common": {
     "loading": "Chargement...",
     "save": "Enregistrer",
     "cancel": "Annuler",
-    "confirm": "Confirmer",
-    "back": "Retour",
     "close": "Fermer",
+    "edit": "Modifier",
+    "viewAll": "Tout voir",
+    "confirm": "Confirmer",
     "search": "Rechercher",
     "by": "par",
     "listenOnSpotify": "Écouter sur Spotify",
     "noTracksFound": "Aucun titre trouvé."
+  },
+  "admin": {
+    "dashboard_title": "Tableau de Bord Admin",
+    "restricted_area": "Zone Réservée",
+    "themes": {
+      "title": "Thèmes Hebdomadaires",
+      "new": "Nouveau Thème",
+      "empty": "Aucun thème trouvé. Créez-en un pour commencer.",
+      "back_to_themes": "Retour aux thèmes",
+      "create_title": "Nouveau Thème Hebdomadaire",
+      "create_subtitle": "Préparez le terrain pour le prochain drop.",
+      "fields": {
+        "year": "Année",
+        "week": "Numéro de semaine",
+        "title": "Titre",
+        "description": "Description (Optionnel)",
+        "placeholder_title": "ex: Plaisirs coupables",
+        "placeholder_description": "Décrivez brièvement les restrictions..."
+      },
+      "create_cta": "Créer le Thème",
+      "actions": {
+        "open": "Ouvrir les Soumissions",
+        "lock": "Verrouiller les Prédictions",
+        "resolve": "Démarrer la Résolution",
+        "finish": "Terminer le Thème"
+      }
+    }
   }
 }

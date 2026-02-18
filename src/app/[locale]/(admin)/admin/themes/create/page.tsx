@@ -2,37 +2,35 @@
 "use client";
 
 import { createTheme } from "@/app/actions/themes";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input"; // Need to check if Input exists, if not create basic input
-import { Label } from "@/components/ui/label"; // Same for Label
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useActionState } from "react";
-// Next.js 15+ useActionState, possibly 14 uses useFormState. Checking package.json -> Next 16.1.6 
-// In Next 16, useActionState is correct (renamed from useFormState)
-// But to be safe with types, let's just use standard form action for now or verify imports.
-// Wait, react-dom 19.2.3. useActionState is available in React 19.
 
 export default function CreateThemePage() {
+  const t = useTranslations("admin.themes");
+  const tCommon = useTranslations("common");
   
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <Link href="/admin/themes" className="inline-flex items-center text-slate-400 hover:text-white transition-colors">
         <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Themes
+        {t("back_to_themes")}
       </Link>
 
       <div>
-        <h1 className="text-2xl font-bold text-white mb-2">New Weekly Theme</h1>
-        <p className="text-slate-400">Set the stage for the next drop.</p>
+        <h1 className="text-2xl font-bold text-white mb-2">{t("create_title")}</h1>
+        <p className="text-slate-400">{t("create_subtitle")}</p>
       </div>
 
       <Card padding="lg" className="bg-surface-900/50 border border-white/5">
         <form action={createTheme} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label htmlFor="year" className="text-sm font-medium text-slate-300">Year</label>
+              <label htmlFor="year" className="text-sm font-medium text-slate-300">
+                {t("fields.year")}
+              </label>
               <input 
                 name="year" 
                 id="year" 
@@ -43,7 +41,9 @@ export default function CreateThemePage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="week_number" className="text-sm font-medium text-slate-300">Week Number</label>
+              <label htmlFor="week_number" className="text-sm font-medium text-slate-300">
+                {t("fields.week")}
+              </label>
               <input 
                 name="week_number" 
                 id="week_number" 
@@ -56,33 +56,37 @@ export default function CreateThemePage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="title" className="text-sm font-medium text-slate-300">Title</label>
+            <label htmlFor="title" className="text-sm font-medium text-slate-300">
+                {t("fields.title")}
+            </label>
             <input 
               name="title" 
               id="title" 
               type="text" 
-              placeholder="e.g. Guilty Pleasures"
+              placeholder={t("fields.placeholder_title")}
               required
               className="w-full bg-surface-800 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-primary-500"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="description" className="text-sm font-medium text-slate-300">Description (Optional)</label>
+            <label htmlFor="description" className="text-sm font-medium text-slate-300">
+                {t("fields.description")}
+            </label>
             <textarea 
               name="description" 
               id="description" 
               rows={3}
-              placeholder="Briefly describe the restrictions..."
+              placeholder={t("fields.placeholder_description")}
               className="w-full bg-surface-800 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-primary-500 resize-none"
             />
           </div>
 
           <div className="pt-4 flex justify-end gap-3">
              <Link href="/admin/themes">
-               <Button type="button" variant="ghost">Cancel</Button>
+               <Button type="button" variant="ghost">{tCommon("cancel")}</Button>
              </Link>
-             <Button type="submit" variant="primary">Create Theme</Button>
+             <Button type="submit" variant="primary">{t("create_cta")}</Button>
           </div>
         </form>
       </Card>

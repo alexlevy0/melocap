@@ -8,8 +8,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createTheme(formData: FormData) {
-  const supabase = createClient();
-  const { data: { user } } = await (await supabase).auth.getUser();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user || !isAdmin(user.email)) {
     throw new Error("Unauthorized");
@@ -58,14 +58,14 @@ export async function createTheme(formData: FormData) {
 }
 
 export async function getThemes() {
-  const supabase = createClient();
-  const { data: { user } } = await (await supabase).auth.getUser();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user || !isAdmin(user.email)) {
     throw new Error("Unauthorized");
   }
 
-  const { data, error } = await (await supabase)
+  const { data, error } = await supabase
     .from("weekly_themes")
     .select("*")
     .order("year", { ascending: false })
@@ -80,8 +80,8 @@ export async function getThemes() {
 }
 
 export async function updateThemeStatus(id: string, status: ThemeStatus) {
-  const supabase = createClient();
-  const { data: { user } } = await (await supabase).auth.getUser();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user || !isAdmin(user.email)) {
     throw new Error("Unauthorized");

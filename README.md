@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎵 MeloCaps
 
-## Getting Started
+**MeloCaps** is a predictive music curation Web App (PWA). Discover today the hits of tomorrow by joining a community of talent scouts.
 
-First, run the development server:
+## 🚀 Core Concept
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Every week, users join **Pods** of 7 people to participate in a "Drop".
+1. **The Fever (Friday 19:00 - Sunday 12:00)**: Submit a track from Spotify based on a weekly theme and support tracks you believe will go viral.
+2. **The Lock (Sunday 12:00 - Sunday 19:00)**: Submissions are closed. The community's predictions are locked in.
+3. **The Drop (Sunday 19:00)**: Results are revealed. Your reputation increases based on the accuracy of your predictions.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> [!IMPORTANT]
+> This is **NOT** a gambling app. It is a reputation-based curation system. We talk about **predictions**, **support**, and **reputation**, not "bets" or "gambling".
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: [Next.js 14+](https://nextjs.org/) (App Router), TypeScript, Tailwind CSS
+- **Backend/Database**: [Supabase](https://supabase.com/) (Auth, PostgreSQL, Realtime, Edge Functions)
+- **i18n**: [next-intl](https://next-intl-docs.vercel.app/) (English & French support)
+- **API**: [Spotify Web API](https://developer.spotify.com/documentation/web-api) for track discovery
 
-## Learn More
+## ⚙️ Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js 18+
+- A Supabase project with Spotify Auth configured
+- Spotify Developer Application credentials
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/alexlevy0/melocap.git
+   cd melocap
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Configure environment variables (`.env.local`):
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   SPOTIFY_CLIENT_ID=your_spotify_client_id
+   SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 📖 Documentation
+
+For more internal details, refer to:
+- `docs/DATABASE.md`: Database schema and RLS policies.
+- `docs/GAME_ENGINE.md`: Business logic for scoring and reputation.
+- `docs/PHASES.md`: Detailed breakdown of the weekly cycle.
+- `docs/SPRINTS.md`: Development roadmap.

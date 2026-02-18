@@ -9,15 +9,15 @@ import { Users, Info, Ticket } from "lucide-react";
 export default async function PodHubPage() {
   const t = await getTranslations("pod");
   
-  const supabase = createClient();
-  const { data: { user } } = await (await supabase).auth.getUser();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     redirect("/login?next=/game/pod");
   }
 
   // 1. Get current theme
-  let { data: theme } = await (await supabase)
+  let { data: theme } = await supabase
     .from("weekly_themes")
     .select("*")
     .in("status", ["open", "locked", "resolving", "upcoming"])
@@ -34,14 +34,14 @@ export default async function PodHubPage() {
             </div>
             <h1 className="text-2xl font-bold text-white">{t("waiting_status")}</h1>
             <p className="text-slate-400 max-w-md">
-                There is no active theme right now. Come back later for the next drop!
+                {t("no_active_theme")}
             </p>
         </div>
     )
   }
 
   // 2. Check if user is in a pod
-  const { data: membership } = await (await supabase)
+  const { data: membership } = await supabase
     .from("pods_members")
     .select(`
       pod_id,
@@ -68,11 +68,11 @@ export default async function PodHubPage() {
             </div>
             <h1 className="text-2xl font-bold text-white">{theme.title}</h1>
             <p className="text-slate-400 max-w-md">
-                {t("upcoming_status", { defaultMessage: "This theme opens soon. Get ready to join a pod!" })}
+                {t("upcoming_status")}
             </p>
              {/* Optional: Add a countdown or 'Notify Me' here */}
              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-800 border border-white/5 text-sm text-slate-400">
-                Opening Soon
+                {t("status.opening_soon")}
             </div>
         </div>
      );

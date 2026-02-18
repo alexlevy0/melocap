@@ -15,15 +15,16 @@ export interface SpotifyTrackSubmission {
 
 export async function submitTrack(podId: string, track: SpotifyTrackSubmission) {
   const t = await getTranslations("errors");
-  const supabase = createClient();
-  const { data: { user } } = await (await supabase).auth.getUser();
+  const supabase = await createClient(); // Await once here
+  
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     throw new Error(t("unauthorized"));
   }
 
   // 1. Verify user is member of the pod
-  const { data: membership } = await (await supabase)
+  const { data: membership } = await supabase
     .from("pods_members")
     .select("pod_id")
     .eq("pod_id", podId)
@@ -35,7 +36,7 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
   }
 
   // 1.5 Check Theme Status (must be 'open')
-  const { data: pod } = await (await supabase)
+  const { data: pod } = await supabase
     .from("pods")
     .select(`
       theme_id,
@@ -46,24 +47,33 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
     .eq("id", podId)
     .single();
 
-  if (!pod || (pod.weekly_themes as any)?.status !== "open") {
-    throw new Error(t("weekendOnly")); // Or specific error "Theme is not open for submissions"
+  if (!pod) {
+    throw new Error(t("generic"));
+  }
+
+  // Type-safe status check
+  const themeStatus = Array.isArray(pod.weekly_themes) 
+    ? pod.weekly_themes[0]?.status 
+    : pod.weekly_themes?.status;
+
+  if (themeStatus !== "open") {
+    throw new Error(t("weekendOnly"));
   }
 
   // 2. Check if user already submitted for this pod
-  const { data: existingSubmission } = await (await supabase)
+  const { data: existingSubmission } = await supabase
     .from("submissions")
     .select("id")
     .eq("pod_id", podId)
     .eq("user_id", user.id)
-    .maybeSingle(); // Use maybeSingle to avoid error if none found
+    .maybeSingle();
 
   if (existingSubmission) {
-    throw new Error(t("alreadyInPod")); // Reusing existing error key or add new one
+    throw new Error(t("alreadyInPod"));
   }
 
   // 3. Check if track is already taken in this pod
-  const { data: duplicateTrack } = await (await supabase)
+  const { data: duplicateTrack } = await supabase
     .from("submissions")
     .select("id")
     .eq("pod_id", podId)
@@ -75,7 +85,7 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
   }
 
   // 4. Insert submission
-  const { error } = await (await supabase)
+  const { error } = await supabase
     .from("submissions")
     .insert({
       pod_id: podId,
@@ -86,9 +96,7 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
       album_image_url: track.album_image_url,
       preview_url: track.preview_url,
       spotify_uri: track.spotify_uri,
-      // theme_id is implicit via pod, but we check theme status via RLS or trigger usually.
-      // For MVP, we trust the UI state or add a check here.
-    } as any); // Temporary cast to bypass TS missing types if not fully generated
+    });
 
   if (error) {
     console.error("Submit Track Error:", error);

@@ -6,27 +6,25 @@ import { SubmitTrackDialog } from "@/components/game/SubmitTrackDialog";
 import { PodMembers } from "@/components/game/PodMembers";
 
 interface PodPageProps {
-    params: {
+    params: Promise<{
         locale: string;
         podId: string;
-    }
+    }>
 }
 
 export default async function PodPage({ params }: PodPageProps) {
-  // Await the params object (Next.js 15 requirement)
   const { podId } = await params;
-  
   const t = await getTranslations("pod");
   
-  const supabase = createClient();
-  const { data: { user } } = await (await supabase).auth.getUser();
+  const supabase = await createClient(); // Await once
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     redirect(`/login?next=/game/pod/${podId}`);
   }
 
   // 1. Get Pod Details
-  const { data: pod, error } = await (await supabase)
+  const { data: pod, error } = await supabase
     .from("pods")
     .select(`
         id,
@@ -42,11 +40,11 @@ export default async function PodPage({ params }: PodPageProps) {
     .single();
 
   if (error || !pod) {
-      redirect("/game/pod"); // Fallback to join page if pod not found
+      redirect("/game/pod");
   }
 
-  // 2. Security Check: Is user member of this pod?
-  const { data: membership } = await (await supabase)
+  // 2. Security Check
+  const { data: membership } = await supabase
     .from("pods_members")
     .select("id")
     .eq("pod_id", podId)
@@ -54,13 +52,11 @@ export default async function PodPage({ params }: PodPageProps) {
     .single();
 
   if (!membership) {
-      // User trying to access a pod they are not in
-      // Redirect to their actual pod or join page
       redirect("/game/pod");
   }
 
   // 3. Fetch members
-  const { data: members } = await (await supabase)
+  const { data: members } = await supabase
     .from("pods_members")
     .select(`
         user_id,
@@ -70,28 +66,35 @@ export default async function PodPage({ params }: PodPageProps) {
             avatar_url
         )
     `)
-    .eq("pod_id", (pod as any).id)
+    .eq("pod_id", pod.id)
     .order("joined_at", { ascending: true });
   
-  // Cast members manually for now (or improve types later)
-  const safeMembers = (members || []) as any[];
+  const safeMembers = (members || []).map(m => ({
+    user_id: m.user_id,
+    joined_at: m.joined_at,
+    user: Array.isArray(m.user) ? m.user[0] : m.user
+  }));
   
-  // 4. Check if user has already submitted a track
-  const { data: userSubmission } = await (await supabase)
+  // 4. Check user submission
+  const { data: userSubmission } = await supabase
     .from("submissions")
     .select("*")
     .eq("pod_id", podId)
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
 
-  // 5. Get all submissions for this pod to display in slots
-  const { data: allSubmissions } = await (await supabase)
+  // 5. Get all submissions
+  const { data: allSubmissions } = await supabase
       .from("submissions")
       .select("*")
       .eq("pod_id", podId);
 
-  // Destructure theme for easier access in JSX
-  const theme = (pod as any).theme as { id: string; title: string; status: string };
+  // Type-safe join handling
+  const theme = Array.isArray(pod.theme) ? pod.theme[0] : pod.theme;
+
+  if (!theme) {
+      redirect("/game/pod");
+  }
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen p-4 md:p-8 space-y-8 animate-in fade-in duration-500">

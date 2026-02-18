@@ -14,6 +14,8 @@ type UserProfile = Database["public"]["Tables"]["users"]["Row"];
 
 export default function ProfilePage() {
   const t = useTranslations("profile");
+  const tCommon = useTranslations("common");
+  const tCoins = useTranslations("coins");
   
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -88,7 +90,7 @@ export default function ProfilePage() {
     <main className="min-h-screen pb-24 md:pb-8 p-4 md:p-8 space-y-8 bg-gradient-to-b from-surface-950 to-black">
       {/* Header */}
       <header className="flex justify-between items-center max-w-7xl mx-auto w-full pt-4">
-        <h1 className="text-xl font-bold text-white">Profile</h1>
+        <h1 className="text-xl font-bold text-white">{t("title")}</h1>
         <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full hover:bg-white/10">
           <Settings className="w-5 h-5 text-white" />
         </Button>
@@ -123,7 +125,7 @@ export default function ProfilePage() {
                 </h2>
                 <div className="flex items-center justify-center gap-2 text-primary-400 bg-primary-500/10 px-4 py-1.5 rounded-full inline-flex">
                   <Trophy className="w-4 h-4" />
-                  <span className="text-xs font-bold tracking-wider uppercase">Level 12 Expert</span>
+                  <span className="text-xs font-bold tracking-wider uppercase">{t("level", { level: 12 })}</span>
                 </div>
               </div>
             </div>
@@ -139,13 +141,13 @@ export default function ProfilePage() {
               <StatsBlock 
                 icon={TrendingUp} 
                 value="68%" 
-                label="Success" 
+                label={t("stats.success")} 
                 color="text-accent-400"
               />
               <StatsBlock 
                 icon={Users} 
                 value="2" 
-                label="Pods" 
+                label={t("stats.pods")} 
                 color="text-primary-400"
               />
             </div>
@@ -154,10 +156,10 @@ export default function ProfilePage() {
           {/* Right Column (Badges + History) */}
           <div className="lg:col-span-8 space-y-8">
             {/* Badges Section */}
-            <Card className="p-6 border-white/5 bg-surface-900/30" padding="md">
+            <Card className="p-6 border-white/5 bg-surface-900/30">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-white">Unlocked Badges</h3>
-                <button className="text-xs text-primary-400 hover:text-primary-300 font-medium">View All</button>
+                <h3 className="text-lg font-bold text-white">{t("badges.title")}</h3>
+                <button className="text-xs text-primary-400 hover:text-primary-300 font-medium">{tCommon("viewAll")}</button>
               </div>
               <div className="flex flex-wrap gap-4 justify-start">
                 {badges.map((badge) => (
@@ -173,7 +175,7 @@ export default function ProfilePage() {
 
             {/* Recent Predictions */}
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-white">Recent Predictions</h3>
+              <h3 className="text-lg font-bold text-white">{t("history.title")}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {history.map((item) => (
                   <Card key={item.id} variant="hover" padding="sm" className="group flex items-center gap-4 bg-surface-900/50 border-white/5 p-4">
@@ -185,13 +187,13 @@ export default function ProfilePage() {
                     <div className="flex-1 min-w-0">
                       <h4 className="text-white font-bold text-base truncate group-hover:text-primary-400 transition-colors">{item.title}</h4>
                       <p className="text-xs text-slate-400 mt-0.5">{item.artist}</p>
-                      <p className="text-[10px] text-slate-500 mt-1">Curated {item.date}</p>
+                      <p className="text-[10px] text-slate-500 mt-1">{t("history.curated", { date: item.date })}</p>
                     </div>
                     <div className="text-right">
                       <span className={`font-bold text-lg ${item.positive ? 'text-secondary-400' : 'text-red-400'}`}>
                         {item.result}
                       </span>
-                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">Coins</p>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">{tCoins("meloCoins")}</p>
                     </div>
                   </Card>
                 ))}

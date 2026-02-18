@@ -1,7 +1,6 @@
-
 import { createAdminClient } from "@/lib/supabase/admin";
-import { ThemeStatus } from "@/types/database";
 import { NextResponse } from "next/server";
+import { getParisDate } from "@/lib/utils/weekend";
 
 export async function GET(request: Request) {
   // 1. Auth Check (CRON_SECRET)
@@ -11,27 +10,21 @@ export async function GET(request: Request) {
   }
 
   const adminSupabase = createAdminClient();
-  const now = new Date(); // UTC by default in Edge environment
+  const now = new Date();
+  const parisNow = getParisDate();
   
-  // NOTE: Logic assumes Paris time (CET/CEST). 
-  // Simple approximation: UTC+1 (Winter) or UTC+2 (Summer). 
-  // For MVP, we'll use UTC times that correspond roughly to Paris 19:00.
-  // 19:00 Paris = 18:00 UTC (Winter) / 17:00 UTC (Summer).
-  
-  const currentDay = now.getUTCDay(); // 0=Sun, 5=Fri
-  const currentHour = now.getUTCHours(); 
+  const currentDay = parisNow.getDay(); // 0=Sun, 5=Fri
+  const currentHour = parisNow.getHours(); 
 
-  // LOGIC:
-  // Friday 17:00 UTC (approx 18-19h Paris) -> OPEN upcoming theme
-  // Sunday 11:00 UTC (approx 12-13h Paris) -> LOCK open theme
-  // Sunday 17:00 UTC (approx 18-19h Paris) -> RESOLVE locked theme
+  // LOGIC (Paris Time):
+  // Friday 19:00 -> OPEN (Drop)
+  // Sunday 12:00 -> LOCK (End of submission/staking)
+  // Sunday 19:00 -> RESOLVE (Algorithm execution)
 
   const logs: string[] = [];
 
   // --- TRANSITION: UPCOMING -> OPEN ---
-  if (currentDay === 5 && currentHour >= 17) {
-    // Find upcoming theme for this week
-    // Doing a loose check for now: just pick the first upcoming one
+  if (currentDay === 5 && currentHour >= 19) {
     const { data: upcoming } = await adminSupabase
         .from("weekly_themes")
         .select("*")
@@ -51,46 +44,54 @@ export async function GET(request: Request) {
         
         if (!error) logs.push(`Opened theme: ${upcoming.title}`);
         else logs.push(`Failed to open theme: ${upcoming.title} - ${error.message}`);
+    } else {
+        logs.push("Upcoming check: No 'upcoming' theme found for Friday drop.");
     }
   }
 
   // --- TRANSITION: OPEN -> LOCKED ---
-  if (currentDay === 0 && currentHour >= 11 && currentHour < 17) {
+  if (currentDay === 0 && currentHour >= 12 && currentHour < 19) {
      const { data: openThemes } = await adminSupabase
         .from("weekly_themes")
         .select("*")
         .eq("status", "open");
      
-     for (const theme of openThemes || []) {
-        const { error } = await adminSupabase
-            .from("weekly_themes")
-            .update({ 
-                status: "locked", 
-                locked_at: now.toISOString() 
-            })
-            .eq("id", theme.id);
-        
-        if (!error) logs.push(`Locked theme: ${theme.title}`);
+     if (openThemes && openThemes.length > 0) {
+       for (const theme of openThemes) {
+          const { error } = await adminSupabase
+              .from("weekly_themes")
+              .update({ 
+                  status: "locked", 
+                  locked_at: now.toISOString() 
+              })
+              .eq("id", theme.id);
+          
+          if (!error) logs.push(`Locked theme: ${theme.title}`);
+          else logs.push(`Failed to lock theme: ${theme.title} - ${error.message}`);
+       }
      }
   }
 
   // --- TRANSITION: LOCKED -> RESOLVING ---
-  if (currentDay === 0 && currentHour >= 17) {
+  if (currentDay === 0 && currentHour >= 19) {
      const { data: lockedThemes } = await adminSupabase
         .from("weekly_themes")
         .select("*")
         .eq("status", "locked");
 
-     for (const theme of lockedThemes || []) {
-        const { error } = await adminSupabase
-            .from("weekly_themes")
-            .update({ 
-                status: "resolving", 
-                resolved_at: now.toISOString() 
-            })
-            .eq("id", theme.id);
-        
-        if (!error) logs.push(`Started resolving theme: ${theme.title}`);
+     if (lockedThemes && lockedThemes.length > 0) {
+       for (const theme of lockedThemes) {
+          const { error } = await adminSupabase
+              .from("weekly_themes")
+              .update({ 
+                  status: "resolving", 
+                  resolved_at: now.toISOString() 
+              })
+              .eq("id", theme.id);
+          
+          if (!error) logs.push(`Started resolving theme: ${theme.title}`);
+          else logs.push(`Failed to resolve theme: ${theme.title} - ${error.message}`);
+       }
      }
   }
 

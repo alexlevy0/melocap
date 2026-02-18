@@ -3,13 +3,13 @@ import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   // Logic: 
   // 1. Try to find an Open, Locked, or Resolving theme (Active)
   // 2. If none, find the next Upcoming theme
 
-  let { data: theme, error } = await (await supabase)
+  let { data: theme, error } = await supabase
     .from("weekly_themes")
     .select("*")
     .in("status", ["open", "locked", "resolving"])
@@ -19,7 +19,7 @@ export async function GET() {
 
   if (!theme) {
      // No active theme, look for upcoming
-     const { data: upcoming } = await (await supabase)
+     const { data: upcoming } = await supabase
         .from("weekly_themes")
         .select("*")
         .eq("status", "upcoming")

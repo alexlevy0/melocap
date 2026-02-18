@@ -28,6 +28,11 @@
     "theme": {
       "current": "Current Theme",
       "upcoming": "Next Theme"
+    },
+    "stats": {
+      "players": "Players",
+      "tracks": "Tracks",
+      "coins": "MeloCoins"
     }
   },
   "leaderboard": {
@@ -85,9 +90,17 @@
     },
     "status": {
       "open": "The Fever — Submissions open",
-      "locked": "Bets are locked!",
+      "locked": "Submissions locked",
       "resolving": "Resolving...",
-      "finished": "Results available"
+      "finished": "Results available",
+      "opening_soon": "Opening soon"
+    },
+    "no_active_theme": "There is no active theme right now. Come back later for the next drop!",
+    "submit": {
+      "success": "Track submitted successfully!",
+      "selected_track": "Selected Track",
+      "description": "Search for a track on Spotify to submit to your Pod.",
+      "submitting": "Submitting..."
     }
   },
   "game": {
@@ -99,7 +112,18 @@
     "title": "My Profile",
     "wallet": "MeloCoins",
     "reputation": "Reputation Score",
-    "history": "Prediction History",
+    "history": {
+      "title": "Prediction History",
+      "curated": "Curated {date}"
+    },
+    "badges": {
+      "title": "Unlocked Badges"
+    },
+    "stats": {
+      "success": "Success",
+      "pods": "Pods"
+    },
+    "level": "Level {level} Expert",
     "edit": "Edit Profile"
   },
   "coins": {
@@ -116,18 +140,47 @@
     "alreadyInPod": "You are already in a Pod this week.",
     "trackAlreadyTaken": "This track is already submitted in your Pod.",
     "insufficientCoins": "Insufficient MeloCoins balance.",
-    "weekendOnly": "This action is only available on weekends."
+    "weekendOnly": "This action is only available on weekends.",
+    "submitFailed": "Failed to submit track."
   },
   "common": {
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
-    "confirm": "Confirm",
-    "back": "Back",
     "close": "Close",
+    "edit": "Edit",
+    "viewAll": "View All",
+    "confirm": "Confirm",
     "search": "Search",
     "by": "by",
     "listenOnSpotify": "Listen on Spotify",
     "noTracksFound": "No tracks found."
+  },
+  "admin": {
+    "dashboard_title": "Admin Dashboard",
+    "restricted_area": "Restricted Area",
+    "themes": {
+      "title": "Weekly Themes",
+      "new": "New Theme",
+      "empty": "No themes found. Create one to get started.",
+      "back_to_themes": "Back to Themes",
+      "create_title": "New Weekly Theme",
+      "create_subtitle": "Set the stage for the next drop.",
+      "fields": {
+        "year": "Year",
+        "week": "Week Number",
+        "title": "Title",
+        "description": "Description (Optional)",
+        "placeholder_title": "e.g. Guilty Pleasures",
+        "placeholder_description": "Briefly describe the restrictions..."
+      },
+      "create_cta": "Create Theme",
+      "actions": {
+        "open": "Open Submissions",
+        "lock": "Lock Predictions",
+        "resolve": "Start Resolving",
+        "finish": "Finish Theme"
+      }
+    }
   }
 }

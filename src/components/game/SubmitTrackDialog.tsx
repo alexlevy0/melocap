@@ -48,12 +48,12 @@ export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
 
       await submitTrack(podId, submission);
       
-      toast.success("Track submitted successfully!");
+      toast.success(t("pod.submit.success"));
       setOpen(false);
       setSelectedTrack(null);
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message || "Failed to submit track");
+      toast.error(error.message || t("errors.submitFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -71,7 +71,7 @@ export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
         <DialogHeader>
           <DialogTitle>{t("pod.actions.submit")}</DialogTitle>
           <DialogDescription>
-            Search for a track on Spotify to submit to your Pod.
+            {t("pod.submit.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -80,7 +80,7 @@ export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
         ) : (
           <div className="space-y-6">
             <div className="bg-surface-800 p-4 rounded-xl border border-white/5">
-                 <h3 className="text-sm font-medium text-slate-400 mb-3">Selected Track</h3>
+                 <h3 className="text-sm font-medium text-slate-400 mb-3">{t("pod.submit.selected_track")}</h3>
                  <TrackCard track={selectedTrack} />
             </div>
             
@@ -100,7 +100,7 @@ export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 w-4 h-4 animate-spin" />
-                            Submitting...
+                            {t("pod.submit.submitting")}
                         </>
                     ) : (
                          t("common.confirm")

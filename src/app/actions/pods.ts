@@ -7,11 +7,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function joinPod(themeId: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const adminSupabase = createAdminClient();
   
   /* console.log("JoinPod Action: Checking user session"); */
-  const { data: { user }, error: userError } = await (await supabase).auth.getUser();
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
 
   if (userError || !user) {
     redirect("/login?next=/game/pod");
