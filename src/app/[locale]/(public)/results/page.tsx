@@ -18,7 +18,7 @@ export default function ResultsPage() {
         <h1 className="text-3xl font-display font-bold gradient-text-secondary">
           {t("title", { week: 42 })}
         </h1>
-        <p className="text-slate-400">The Drop #42</p>
+        <p className="text-slate-400">{t("dropNumber", { number: 42 })}</p>
       </header>
 
       <div className="space-y-4">
@@ -44,7 +44,7 @@ export default function ResultsPage() {
         ))}
         
         <div className="text-center text-slate-500 py-8 italic">
-          ... and 45 more tracks
+          {t("moreTracks", { count: 45 })}
         </div>
       </div>
     </main>

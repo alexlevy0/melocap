@@ -35,7 +35,19 @@
 | `src/lib/spotify/*.ts` | S2-01 | ✅ DONE |
 | `src/components/game/TrackSearch.tsx` | S2-01 | ✅ DONE |
 | `src/components/game/TrackCard.tsx` | S2-01 | ✅ DONE |
-| `src/i18n/*.json` | S2-01 | ✅ DONE |
+| `src/app/[locale]/(admin)/*` | S2-02 | ✅ DONE |
+| `src/app/actions/themes.ts` | S2-02 | ✅ DONE |
+| `src/app/api/cron/update-theme-status/route.ts` | S2-02 | ✅ DONE |
+| `src/app/api/theme/current/route.ts` | S2-02 | ✅ DONE |
+| `src/lib/game/pods.ts` | S2-03 | ✅ DONE |
+| `src/app/actions/pods.ts` | S2-03 | ✅ DONE |
+| `src/app/api/pods/join/route.ts` | S2-03 | ✅ DONE |
+| `src/app/[locale]/(auth)/game/pod/*` | S2-03 | ✅ DONE |
+| `src/components/game/PodMembers.tsx` | S2-03 | ✅ DONE |
+| `src/app/actions/submissions.ts` | S2-04 | ✅ DONE |
+| `src/components/game/SubmitTrackDialog.tsx` | S2-04 | ✅ DONE |
+| `src/components/ui/dialog.tsx` | S2-04 | ✅ DONE |
+| `src/components/ui/sonner.tsx` | S2-04 | ✅ DONE |
 
 
 ### Décisions Techniques Prises
@@ -56,6 +68,8 @@
 | `.agent/` bloquait `create-next-app` | Déplacé temporairement | S1-01 |
 | Limite de projets gratuits Supabase | Pause d'un vieux projet pour libérer un slot | S1-02 |
 | Warnings Sécurité sur les Functions | Migration `002` pour fixer le `search_path` | S1-04 |
+| Redirect Loop Login/Profile | Fix middleware + `next` param + Auto-redirect Login | S2-03 |
+| "No active theme" error | Ajout du status `upcoming` dans la query Pod Hub | S2-03 |
 
 ### Changements de Schéma BDD
 
@@ -95,8 +109,8 @@
 
 ### Gameplay
 - [x] Recherche Spotify fonctionnelle
-- [ ] Création/Assignation de Pod
-- [ ] Soumission de titre
+- [x] Création/Assignation de Pod
+- [x] Soumission de titre
 - [ ] Staking
 - [ ] Résolution (Engine)
 
@@ -107,13 +121,17 @@
 - [x] Page Leaderboard (S1-05) - Mock Data
 - [x] Page Résultats (S1-05) - Mock Data
 - [x] Navigation Responsive (Top/Bottom) (S1-05)
-- [ ] Page Pod
+- [x] Page Pod (S2-03)
 
 ### Compliance
 - [ ] Zéro vocabulaire gambling
 - [x] Deep links Spotify
 
 ---
+- [x] Admin Interface (Page + Server Action)
+- [x] API GET /api/theme/current
+- [x] Theme Status Logic (CRON)
+- [x] Integrate Theme in Home Page (Display + Countdown)
 
 ## Versions Déployées
 

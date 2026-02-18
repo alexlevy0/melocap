@@ -2,23 +2,43 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, Suspense, useEffect } from "react";
 
-export default function LoginPage() {
+function LoginForm() {
   const t = useTranslations("auth");
   const [isLoading, setIsLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
+
+  const { replace } = useRouter();
+  
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkSession = async () => {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        replace(next || "/profile");
+      }
+    };
+    checkSession();
+  }, [next, replace]);
 
   const handleLogin = async () => {
     try {
       setIsLoading(true);
       const supabase = createClient();
       
+      const redirectTo = new URL(`${globalThis.location.origin}/auth/callback`);
+      if (next) {
+        redirectTo.searchParams.set("next", next);
+      }
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "spotify",
         options: {
-          // Redirect to the auth callback route
-          redirectTo: `${globalThis.location.origin}/auth/callback`,
-          // Request scopes for playlist modification (future features)
+          redirectTo: redirectTo.toString(),
           scopes: "user-read-email playlist-modify-public playlist-modify-private",
         },
       });
@@ -28,12 +48,10 @@ export default function LoginPage() {
       console.error("Login error:", error);
       setIsLoading(false);
     }
-    // No finally { setIsLoading(false) } because we redirect away on success
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-surface-900">
-      <div className="w-full max-w-md space-y-8 text-center">
+    <div className="w-full max-w-md space-y-8 text-center">
         <div className="space-y-2">
           <h1 className="text-3xl font-display font-bold gradient-text-primary">
             {t("loginTitle")}
@@ -69,6 +87,15 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-surface-900">
+      <Suspense fallback={<div className="text-white">Loading...</div>}>
+         <LoginForm />
+      </Suspense>
     </main>
   );
 }

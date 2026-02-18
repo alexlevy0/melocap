@@ -9,24 +9,37 @@ interface CountdownProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Countdown({ className, targetDate, ...props }: CountdownProps) {
-  const t = useTranslations("home.countdown"); // Reusing home strings for now, or move to common
-  // For demo, we just show static or simple relative time if passed, 
-  // but "The Drop" logic is specific. 
-  // Let's implement the standard specialized countdown for the "Drop".
+  const t = useTranslations("home.countdown");
   
-  // Hardcoded target for demo: Next Sunday 19:00
-  // In real app, this should come from API (Game Engine)
-  
-  // Logic from HomePage (mocked for now)
-  const [timeLeft, setTimeLeft] = React.useState({
-    days: "02",
-    hours: "14",
-    minutes: "32",
-    seconds: "45",
-  });
+  const calculateTimeLeft = () => {
+    // If no target date, return zeros
+    if (!targetDate) {
+      return { days: "00", hours: "00", minutes: "00", seconds: "00" };
+    }
 
-  // Effect to tick would be here. Skipping complex implementation for this "UI Component" ticket, 
-  // focusing on the structure.
+    const difference = new Date(targetDate).getTime() - new Date().getTime();
+    
+    if (difference <= 0) {
+      return { days: "00", hours: "00", minutes: "00", seconds: "00" };
+    }
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)).toString().padStart(2, "0"),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24).toString().padStart(2, "0"),
+      minutes: Math.floor((difference / 1000 / 60) % 60).toString().padStart(2, "0"),
+      seconds: Math.floor((difference / 1000) % 60).toString().padStart(2, "0"),
+    };
+  };
+
+  const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [targetDate]);
   
   return (
     <div className={cn("grid grid-cols-4 gap-2 md:gap-4 text-center", className)} {...props}>

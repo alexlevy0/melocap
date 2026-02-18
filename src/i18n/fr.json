@@ -16,17 +16,17 @@
       "discover": "Voir les résultats"
     },
     "countdown": {
-      "title": "Prochain Drop",
-      "days": "jours",
-      "hours": "heures",
-      "minutes": "minutes",
-      "seconds": "secondes",
-      "live": "The Drop est en cours !",
-      "join": "Rejoindre un Pod"
+      "title": "Le Drop #1 se termine dans",
+      "live": "Fin des soumissions dans",
+      "days": "Jours",
+      "hours": "Heures",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "join": "Rejoindre le Pod"
     },
     "theme": {
-      "current": "Thème de la semaine",
-      "upcoming": "Prochain thème"
+      "upcoming": "Prochain Thème",
+      "current": "Thème Actuel"
     }
   },
   "leaderboard": {
@@ -43,6 +43,8 @@
     "backers": "{count} soutiens",
     "rank": "#{rank}",
     "myPredictions": "Mes prédictions cette semaine",
+    "dropNumber": "The Drop #{number}",
+    "moreTracks": "... et {count} autres titres",
     "earned": "MeloCoins gagnés",
     "burned": "Coins brûlés"
   },
@@ -56,18 +58,29 @@
     "loginDescription": "MeloCaps utilise ton compte Spotify pour t'identifier. Aucune lecture automatique, aucun accès à ta bibliothèque."
   },
   "pod": {
-    "title": "Pod #{number}",
+    "title": "Ton Pod",
     "theme": "Thème : {theme}",
+    "status_label": "Membres",
+    "join_cta": "Rejoindre un Pod",
+    "join_description": "Rejoins un groupe de 7 curateurs pour prédire les futurs hits.",
+    "upcoming_status": "Ce thème ouvre bientôt. Prépare-toi à rejoindre un Pod !",
+    "waiting_status": "En attente de joueurs",
+    "member_status": {
+      "ready": "Curateur",
+      "empty": "Place libre",
+      "waiting": "En attente..."
+    },
     "slots": {
       "waiting": "En attente...",
       "submitted": "Titre soumis",
-      "empty": "Slot libre"
+      "empty": "Place libre"
     },
     "actions": {
       "submit": "Soumettre un titre",
       "support": "Soutenir ce titre",
       "conviction": "Ma conviction",
-      "balance": "Mon solde : {amount} MeloCoins"
+      "balance": "Mon solde : {amount} MeloCoins",
+      "listenOnSpotify": "Écouter sur Spotify"
     },
     "status": {
       "open": "La Fièvre — Soumissions ouvertes",
@@ -113,6 +126,7 @@
     "close": "Fermer",
     "search": "Rechercher",
     "by": "par",
-    "listenOnSpotify": "Écouter sur Spotify"
+    "listenOnSpotify": "Écouter sur Spotify",
+    "noTracksFound": "Aucun titre trouvé."
   }
 }

@@ -6,16 +6,12 @@ import { updateSession } from "./lib/supabase/middleware";
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  // 1. Refresh Supabase session (also protects /game/* routes)
-  const supabaseResponse = await updateSession(request);
+  // 1. Apply next-intl locale routing first to get the base response
+  const response = intlMiddleware(request);
 
-  // If Supabase middleware returned a redirect, honour it
-  if (supabaseResponse.status !== 200) {
-    return supabaseResponse;
-  }
-
-  // 2. Apply next-intl locale routing
-  return intlMiddleware(request);
+  // 2. Refresh Supabase session and check auth
+  // Pass the intl response so cookies are set on it
+  return await updateSession(request, response);
 }
 
 export const config = {

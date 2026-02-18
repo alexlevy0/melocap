@@ -2,7 +2,8 @@
   "app": {
     "name": "MeloCaps",
     "tagline": "Discover tomorrow's hits, today.",
-    "description": "Join a community of music lovers, bet on future hits, and prove your musical flair."
+    "description": "Join a community of music lovers, predict future hits, and prove your musical flair."
+
   },
   "nav": {
     "home": "Home",
@@ -16,17 +17,17 @@
       "discover": "See Results"
     },
     "countdown": {
-      "title": "Next Drop",
-      "days": "days",
-      "hours": "hours",
-      "minutes": "minutes",
-      "seconds": "seconds",
-      "live": "The Drop is live!",
-      "join": "Join a Pod"
+      "title": "The Drop #1 Ends In",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Mins",
+      "seconds": "Secs",
+      "live": "Submission Phase Ends In",
+      "join": "Join the Pod"
     },
     "theme": {
-      "current": "Theme of the week",
-      "upcoming": "Upcoming theme"
+      "current": "Current Theme",
+      "upcoming": "Next Theme"
     }
   },
   "leaderboard": {
@@ -43,6 +44,8 @@
     "backers": "{count} backers",
     "rank": "#{rank}",
     "myPredictions": "My predictions this week",
+    "dropNumber": "The Drop #{number}",
+    "moreTracks": "... and {count} more tracks",
     "earned": "MeloCoins earned",
     "burned": "Coins burned"
   },
@@ -56,8 +59,18 @@
     "loginDescription": "MeloCaps uses your Spotify account to identify you. No auto-play, no library access."
   },
   "pod": {
-    "title": "Pod #{number}",
+    "title": "Your Pod",
     "theme": "Theme: {theme}",
+    "status_label": "Members",
+    "join_cta": "Join a Pod",
+    "join_description": "Join a group of 7 curators to predict the next hits.",
+    "upcoming_status": "This theme opens soon. Get ready to join a pod!",
+    "waiting_status": "Waiting for players",
+    "member_status": {
+      "ready": "Curator",
+      "empty": "Empty Slot",
+      "waiting": "Waiting..."
+    },
     "slots": {
       "waiting": "Waiting...",
       "submitted": "Track submitted",
@@ -67,7 +80,8 @@
       "submit": "Submit a track",
       "support": "Support this track",
       "conviction": "My conviction",
-      "balance": "My balance: {amount} MeloCoins"
+      "balance": "My balance: {amount} MeloCoins",
+      "listenOnSpotify": "Listen on Spotify"
     },
     "status": {
       "open": "The Fever — Submissions open",
@@ -113,6 +127,7 @@
     "close": "Close",
     "search": "Search",
     "by": "by",
-    "listenOnSpotify": "Listen on Spotify"
+    "listenOnSpotify": "Listen on Spotify",
+    "noTracksFound": "No tracks found."
   }
 }

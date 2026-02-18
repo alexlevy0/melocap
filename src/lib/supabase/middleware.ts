@@ -1,8 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request });
+export async function updateSession(request: NextRequest, response: NextResponse) {
+  // Use the passed response instead of creating a new one
+  // let supabaseResponse = NextResponse.next({ request }); <--- Removed
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,28 +17,39 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          supabaseResponse = NextResponse.next({ request });
+          // Apply to the passed response
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            response.cookies.set(name, value, options)
           );
         },
       },
     }
   );
 
-  // Refresh session — IMPORTANT: do not add logic between createServerClient
-  // and supabase.auth.getUser() to avoid session issues.
+  // Refresh session
   const {
     data: { user },
+    error
   } = await supabase.auth.getUser();
 
-  // Protect /game/* routes — redirect to home if not authenticated
+  console.log("Middleware: User status", { 
+      hasUser: !!user, 
+      path: request.nextUrl.pathname,
+      error: error?.message 
+  });
+
+  // Protect /game/* routes — redirect to login if not authenticated
   const isGameRoute = request.nextUrl.pathname.match(/\/game\//);
   if (isGameRoute && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = `/${request.nextUrl.pathname.split("/")[1]}`; // redirect to /{locale}
+    const nextPath = url.pathname;
+    const locale = nextPath.split("/")[1];
+    
+    url.pathname = `/${locale}/login`;
+    url.searchParams.set("next", nextPath);
+    
     return NextResponse.redirect(url);
   }
 
-  return supabaseResponse;
+  return response;
 }

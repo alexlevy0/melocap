@@ -86,7 +86,7 @@ export function TrackSearch({ onSelect, selectedTrackId, placeholder }: TrackSea
         
         {debouncedQuery && !loading && results.length === 0 && (
           <div className="text-center py-8 text-slate-500 text-sm">
-            No tracks found.
+            {t("noTracksFound")}
           </div>
         )}
       </div>

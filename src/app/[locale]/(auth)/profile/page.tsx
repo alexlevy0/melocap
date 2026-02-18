@@ -8,7 +8,7 @@ import type { Database } from "@/types/database";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Settings, Edit2, Wallet, TrendingUp, Users, Music, Zap, Star, Lock, Trophy } from "lucide-react";
+import { Settings, Edit2, Wallet, TrendingUp, Users, Music, Zap, Star, Lock, Trophy, LucideIcon } from "lucide-react";
 
 type UserProfile = Database["public"]["Tables"]["users"]["Row"];
 
@@ -205,7 +205,7 @@ export default function ProfilePage() {
   );
 }
 
-function StatsBlock({ icon: Icon, value, label, color }: { icon: any, value: string, label: string, color: string }) {
+function StatsBlock({ icon: Icon, value, label, color }: { icon: LucideIcon, value: string, label: string, color: string }) {
   return (
     <Card className="flex flex-col items-center justify-center text-center gap-1 hover:bg-surface-800/40 transition-colors cursor-default border-white/5 bg-surface-900/40" padding="sm">
       <div className={`p-2 rounded-full bg-white/5 mb-1`}>

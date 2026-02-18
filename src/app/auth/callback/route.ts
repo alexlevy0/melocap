@@ -7,10 +7,18 @@ export async function GET(request: NextRequest) {
   // if "next" is in param, use it as the redirect URL
   const next = searchParams.get("next") ?? "/profile";
   
+  console.log("Auth Callback: Code present", { code: code?.substring(0, 5) + "...", next });
+
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     
+    if (error) {
+        console.error("Auth Callback Error:", error);
+    } else {
+        console.log("Auth Callback Success: Session exchanged");
+    }
+
     if (!error) {
       const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === "development";
