@@ -73,7 +73,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       >
         <NextIntlClientProvider messages={messages}>
           <Navigation />
-          <div className="pt-16 pb-20 md:pb-0 min-h-screen">
+          <div className="pt-20 md:pt-0 pb-28 md:pb-0 min-h-screen">
             {children}
           </div>
           <Toaster />
