@@ -42,7 +42,6 @@
     "score": "{score} pts",
     "backers": "{count} soutiens",
     "rank": "#{rank}",
-    "listenOnSpotify": "Écouter sur Spotify",
     "myPredictions": "Mes prédictions cette semaine",
     "earned": "MeloCoins gagnés",
     "burned": "Coins brûlés"
@@ -113,6 +112,7 @@
     "back": "Retour",
     "close": "Fermer",
     "search": "Rechercher",
-    "by": "par"
+    "by": "par",
+    "listenOnSpotify": "Écouter sur Spotify"
   }
 }

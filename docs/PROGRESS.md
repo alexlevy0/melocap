@@ -32,6 +32,10 @@
 | `src/components/ui/*.tsx` | S1-06 | ✅ DONE |
 | `src/app/[locale]/(auth)/profile/page.tsx` | S1-07/08 | ✅ DONE |
 | `src/app/[locale]/(public)/*.tsx` | S1-08 | ✅ DONE |
+| `src/lib/spotify/*.ts` | S2-01 | ✅ DONE |
+| `src/components/game/TrackSearch.tsx` | S2-01 | ✅ DONE |
+| `src/components/game/TrackCard.tsx` | S2-01 | ✅ DONE |
+| `src/i18n/*.json` | S2-01 | ✅ DONE |
 
 
 ### Décisions Techniques Prises
@@ -90,7 +94,7 @@
 - [x] Refresh token Spotify automatique (via Supabase)
 
 ### Gameplay
-- [ ] Recherche Spotify fonctionnelle
+- [x] Recherche Spotify fonctionnelle
 - [ ] Création/Assignation de Pod
 - [ ] Soumission de titre
 - [ ] Staking
@@ -107,7 +111,7 @@
 
 ### Compliance
 - [ ] Zéro vocabulaire gambling
-- [ ] Deep links Spotify
+- [x] Deep links Spotify
 
 ---
 
@@ -116,3 +120,5 @@
 | Version | Date | Contenu | URL |
 | ------- | ---- | ------- | --- |
 | (rien encore) | — | — | — |
+
+- **S2-01 / S2-02** : Implémentation de la recherche via Client Credentials Flow pour éviter les rate limits utilisateurs. Ajout du hook `useDebounce` pour optimiser les appels API.

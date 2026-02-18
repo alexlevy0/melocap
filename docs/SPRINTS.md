@@ -5,7 +5,7 @@
 | Sprint | Nom                    | Semaines | Statut |
 | ------ | ---------------------- | -------- | ------ |
 | 1      | Fondations             | 1-2      | ✅ DONE |
-| 2      | Moteur de Jeu          | 3-4      | 🔲 TODO |
+| 2      | Moteur de Jeu          | 3-4      | � WIP |
 | 3      | Économie & Vote        | 5-6      | 🔲 TODO |
 | 4      | Social & Polish        | 7-8      | 🔲 TODO |
 
@@ -74,11 +74,11 @@ Recherche Spotify, création/assignation de Pods, soumission de titres.
 ### Tickets
 
 #### S2-01 : Spotify Search API
-- [ ] Wrapper API dans `src/lib/spotify/search.ts`
-- [ ] Route handler `/api/spotify/search?q=...`
-- [ ] Gestion du refresh token Spotify automatique
-- [ ] Composant `<TrackSearch>` : input avec autocomplete, affiche pochette + artiste + titre
-- [ ] Composant `<TrackCard>` : affiche un titre avec bouton "Écouter sur Spotify" (deep link)
+- [x] Wrapper API dans `src/lib/spotify/search.ts`
+- [x] Route handler `/api/spotify/search?q=...`
+- [x] Gestion du refresh token Spotify automatique (Client Credentials)
+- [x] Composant `<TrackSearch>` : input avec autocomplete, affiche pochette + artiste + titre
+- [x] Composant `<TrackCard>` : affiche un titre avec bouton "Écouter sur Spotify" (deep link)
 
 #### S2-02 : Système de Thèmes Hebdomadaires
 - [ ] Table `weekly_themes` déjà créée (Sprint 1)
