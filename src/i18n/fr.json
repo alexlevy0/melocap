@@ -1,0 +1,118 @@
+{
+  "app": {
+    "name": "MeloCaps",
+    "tagline": "La curation musicale prédictive",
+    "description": "Rejoins un Pod, soumets ton titre, soutiens tes favoris. Le Top 50 se révèle chaque dimanche."
+  },
+  "nav": {
+    "home": "Accueil",
+    "profile": "Profil",
+    "leaderboard": "Classement",
+    "results": "Résultats"
+  },
+  "auth": {
+    "login": "Se connecter avec Spotify",
+    "logout": "Se déconnecter",
+    "connecting": "Connexion en cours...",
+    "welcome": "Bienvenue, {name} !",
+    "loginTitle": "Rejoins la curation",
+    "loginSubtitle": "Connecte-toi avec Spotify pour participer",
+    "loginDescription": "MeloCaps utilise ton compte Spotify pour t'identifier. Aucune lecture automatique, aucun accès à ta bibliothèque."
+  },
+  "home": {
+    "countdown": {
+      "title": "The Drop in",
+      "days": "jours",
+      "hours": "heures",
+      "minutes": "minutes",
+      "seconds": "secondes",
+      "live": "The Drop est en cours !",
+      "join": "Rejoindre un Pod"
+    },
+    "theme": {
+      "current": "Thème de la semaine",
+      "upcoming": "Prochain thème"
+    },
+    "cta": {
+      "discover": "Découvrir les sons de demain",
+      "participate": "Participer à la curation"
+    }
+  },
+  "pod": {
+    "title": "Pod #{number}",
+    "theme": "Thème : {theme}",
+    "slots": {
+      "waiting": "En attente...",
+      "submitted": "Titre soumis",
+      "empty": "Slot libre"
+    },
+    "actions": {
+      "submit": "Soumettre un titre",
+      "support": "Soutenir ce titre",
+      "conviction": "Ma conviction",
+      "balance": "Mon solde : {amount} MeloCoins"
+    },
+    "status": {
+      "open": "La Fièvre — Soumissions ouvertes",
+      "locked": "Les jeux sont faits !",
+      "resolving": "Résolution en cours...",
+      "finished": "Résultats disponibles"
+    }
+  },
+  "game": {
+    "blocked": "Revenez vendredi 19h !",
+    "blockedSubtitle": "MeloCaps est actif uniquement le week-end.",
+    "nextDrop": "Prochain Drop :"
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "wallet": "MeloCoins",
+    "reputation": "Score de Réputation",
+    "history": "Historique des prédictions",
+    "edit": "Modifier le profil"
+  },
+  "results": {
+    "title": "Top 50 — Semaine {week}",
+    "rank": "#{rank}",
+    "score": "{score} pts",
+    "backers": "{count} curateurs",
+    "listenOnSpotify": "Écouter sur Spotify",
+    "myPredictions": "Mes prédictions cette semaine",
+    "earned": "MeloCoins gagnés",
+    "burned": "Coins brûlés"
+  },
+  "leaderboard": {
+    "title": "Tableau d'Honneur",
+    "subtitle": "Les meilleurs curateurs de la semaine",
+    "rank": "Rang",
+    "curator": "Curateur",
+    "reputation": "Réputation",
+    "predictions": "Prédictions réussies"
+  },
+  "coins": {
+    "meloCoin": "MeloCoin",
+    "meloCoins": "MeloCoins",
+    "burned": "Coins brûlés",
+    "earned": "Coins gagnés",
+    "allocation": "Allocation hebdomadaire"
+  },
+  "errors": {
+    "generic": "Une erreur est survenue. Réessaie.",
+    "notFound": "Page introuvable",
+    "unauthorized": "Accès non autorisé",
+    "alreadyInPod": "Tu es déjà dans un Pod cette semaine.",
+    "trackAlreadyTaken": "Ce titre est déjà soumis dans ton Pod.",
+    "insufficientCoins": "Solde insuffisant en MeloCoins.",
+    "weekendOnly": "Cette action n'est disponible que le week-end."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "by": "par"
+  }
+}

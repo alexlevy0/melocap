@@ -10,36 +10,51 @@
 
 | Fichier | Ticket | Statut |
 | ------- | ------ | ------ |
-| (rien encore) | — | — |
+| `tailwind.config.ts` | S1-01 | ✅ DONE |
+| `src/styles/globals.css` | S1-01 | ✅ DONE |
+| `src/i18n/fr.json` | S1-01 | ✅ DONE |
+| `src/i18n/en.json` | S1-01 | ✅ DONE |
+| `src/i18n/routing.ts` | S1-01 | ✅ DONE |
+| `src/i18n/request.ts` | S1-01 | ✅ DONE |
+| `src/middleware.ts` | S1-01 | ✅ DONE |
+| `src/app/[locale]/layout.tsx` | S1-01 | ✅ DONE |
+| `src/app/[locale]/(public)/page.tsx` | S1-01 | ✅ DONE |
+| `next.config.ts` | S1-01 | ✅ DONE |
+| `.env.example` | S1-01 | ✅ DONE |
 
 ### Décisions Techniques Prises
 
 | Décision | Raison | Date |
 | -------- | ------ | ---- |
-| (rien encore) | — | — |
+| next-intl pour l'i18n | Recommandé dans les règles, intégration native App Router | 2026-02-18 |
+| Inter + Outfit (Google Fonts) | Inter pour le corps, Outfit pour les titres (display) | 2026-02-18 |
+| Dark mode par défaut via `class` | Cohérent avec le design system MeloCaps | 2026-02-18 |
+| Palette CSS via variables CSS + Tailwind | Double accès : CSS natif + classes Tailwind | 2026-02-18 |
+| Middleware next-intl exclu de `/auth` | Le callback Supabase ne doit pas avoir de préfixe locale | 2026-02-18 |
 
 ### Problèmes Rencontrés
 
 | Problème | Solution | Ticket |
 | -------- | -------- | ------ |
-| (rien encore) | — | — |
+| `.agent/` bloquait `create-next-app` | Déplacé temporairement en `/tmp` pendant l'init | S1-01 |
+| Import path incorrect dans `middleware.ts` | Corrigé `./src/i18n/routing` → `./i18n/routing` | S1-01 |
 
 ### Changements de Schéma BDD
 
 | Table/Colonne | Changement | Raison | Date |
 | ------------- | ---------- | ------ | ---- |
-| (rien encore) | — | — | — |
+| (rien encore — S1-04) | — | — | — |
 
 ---
 
 ## Checklist Globale
 
 ### Infrastructure
-- [ ] Projet Next.js initialisé
+- [x] Projet Next.js initialisé (Next.js 15, App Router, TypeScript strict)
 - [ ] Supabase connecté
-- [ ] Tailwind configuré avec palette MeloCaps
-- [ ] i18n configuré (fr.json + en.json)
-- [ ] Variables d'environnement documentées dans `.env.example`
+- [x] Tailwind configuré avec palette MeloCaps (violet, orange, cyan)
+- [x] i18n configuré (fr.json + en.json via next-intl)
+- [x] Variables d'environnement documentées dans `.env.example`
 
 ### Auth
 - [ ] Login Spotify fonctionnel
