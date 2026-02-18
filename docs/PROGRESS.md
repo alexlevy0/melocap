@@ -4,7 +4,7 @@
 
 ---
 
-## Sprint Actuel : Sprint 1 — Fondations
+## Sprint Actuel : Sprint 3 — Économie & Vote
 
 ### Fichiers Créés / Modifiés
 
@@ -101,7 +101,7 @@
 - [x] Trigger `on_auth_user_created` fonctionnel
 - [x] Security Advisors vérifiés (0 warnings)
 
-### Sprint 2 : Cœur du Jeu & Matchmaking
+### Sprint 2 : Moteur de Jeu ✅ DONE
 - [x] **S2-01 : Profil Spotify Étendu** (Bio, Genre, Top Artists)
 - [x] **S2-02 : Système de Thèmes Hebdomadaires** (Admin UI + Status logic)
 - [x] **S2-03 : Matchmaking Multi-Pod** (Algorithme de répartition fluide)
@@ -123,7 +123,7 @@
 - [x] Création/Assignation de Pod
 - [x] Soumission de titre
 - [/] Staking
-- [ ] Résolution (Engine)
+- [x] Résolution (Engine) - Structure ready
 
 ### UI/UX
 - [x] Page d'accueil (S1-05) - Hero, CTA, Countdown

@@ -6,6 +6,7 @@ import { NavLink } from "@/components/ui/nav-link";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Home, Trophy, BarChart3, User, Disc } from "lucide-react";
+import { WalletBadge } from "@/components/game/WalletBadge";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { type User as SupabaseUser } from "@supabase/supabase-js";
@@ -52,6 +53,8 @@ export function Navigation() {
           </nav>
 
           <div className="flex items-center gap-4">
+            {user && <WalletBadge className="hidden lg:flex" />}
+            <div className="flex items-center gap-1">
             {user ? (
               <Link href="/profile" className="flex items-center gap-3 pl-2 pr-4 py-1.5 rounded-full glass hover:bg-white/10 transition-colors">
                 <Avatar 
@@ -71,6 +74,7 @@ export function Navigation() {
                 </Button>
               </Link>
             )}
+            </div>
           </div>
         </div>
       </header>

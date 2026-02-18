@@ -6,7 +6,7 @@
 | ------ | ---------------------- | -------- | ------ |
 | 1      | Fondations             | 1-2      | ✅ DONE |
 | 2      | Moteur de Jeu          | 3-4      | ✅ DONE |
-| 3      | Économie & Vote        | 5-6      | 🔲 TODO |
+| 3      | Économie & Vote        | 5-6      | 🔨 WIP  |
 | 4      | Social & Polish        | 7-8      | 🔲 TODO |
 
 ---
