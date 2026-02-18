@@ -56,7 +56,13 @@
     "dropNumber": "The Drop #{number}",
     "moreTracks": "... and {count} more tracks",
     "earned": "MeloCoins earned",
-    "burned": "Coins burned"
+    "burned": "Coins burned",
+    "profit": "Profit",
+    "loss": "Loss",
+    "reputationChange": "Reputation",
+    "successRate": "Success Rate",
+    "noResults": "No results available for this week yet.",
+    "top50": "Global Top 50"
   },
   "auth": {
     "login": "Connect with Spotify",

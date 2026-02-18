@@ -51,15 +51,6 @@
     "score": "{score} pts",
     "backers": "{count} soutiens",
     "rank": "#{rank}",
-    "myPredictions": "Mes prédictions cette semaine",
-    "dropNumber": "The Drop #{number}",
-    "moreTracks": "... et {count} autres titres",
-    "earned": "MeloCoins gagnés",
-    "burned": "Coins brûlés"
-  },
-  "auth": {
-    "login": "Se connecter avec Spotify",
-    "logout": "Se déconnecter",
     "connecting": "Connexion en cours...",
     "welcome": "Bienvenue, {name} !",
     "loginTitle": "Rejoins la curation",
