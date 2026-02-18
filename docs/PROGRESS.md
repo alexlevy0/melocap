@@ -30,6 +30,8 @@
 | `src/app/[locale]/(public)/results/page.tsx` | S1-05 | ✅ DONE |
 | `src/app/[locale]/(public)/page.tsx` | S1-05 | ✅ DONE |
 | `src/components/ui/*.tsx` | S1-06 | ✅ DONE |
+| `src/app/[locale]/(auth)/profile/page.tsx` | S1-07/08 | ✅ DONE |
+| `src/app/[locale]/(public)/*.tsx` | S1-08 | ✅ DONE |
 
 
 ### Décisions Techniques Prises

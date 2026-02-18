@@ -23,7 +23,7 @@ export default function LeaderboardPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
+    <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
       <header className="text-center space-y-2">
         <h1 className="text-3xl font-display font-bold gradient-text-primary">
           {t("title")}
