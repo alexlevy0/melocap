@@ -30,23 +30,8 @@ export async function getUserBalance() {
 export async function distributeWeeklyCoins() {
   const adminSupabase = createAdminClient();
   
-  // 1. Fetch all users
-  const { data: users, error: fetchError } = await adminSupabase
-    .from("users")
-    .select("id, wallet_balance, display_name");
-
-  if (fetchError || !users) {
-    console.error("Failed to fetch users for allocation:", fetchError);
-    throw new Error("Failed to fetch users");
-  }
-
   const allocationAmount = 100;
-  const results = {
-    success: 0,
-    failed: 0,
-    total: users.length
-  };
-
+  
   // 2. Process using Atomic RPC (Batch Processing)
   const { data: rpcResult, error: rpcError } = await adminSupabase.rpc("distribute_weekly_coins", {
     p_amount: allocationAmount
@@ -58,15 +43,14 @@ export async function distributeWeeklyCoins() {
   }
 
   // Cast the result to the expected format since rpc returns any/Json
-  const data = rpcResult as any;
-
-  // Since it's all or nothing in the transaction unless we handle partials inside:
-  // Our RPC returns { success: boolean, users_processed: number }
+  const data = rpcResult as { success: boolean; users_processed: number };
   const totalProcessed = data?.users_processed || 0;
-  
-  results.success = totalProcessed;
-  results.failed = 0; // RPC is atomic, so if it succeeds, 0 failed. If it fails, it throws.
-  results.total = users.length;
+
+  const results = {
+    success: totalProcessed,
+    failed: 0,
+    total: totalProcessed
+  };
 
   revalidatePath("/");
   return results;

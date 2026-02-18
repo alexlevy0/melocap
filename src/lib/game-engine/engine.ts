@@ -14,14 +14,6 @@ import { revalidatePath } from "next/cache";
  * High-risk operation, should be called by an authorized CRON job.
  */
 export async function resolveWeeklyTheme(themeId: string) {
-// ... (lines 16-159 skipped)
-
-async function finishResolution(
-    themeId: string, 
-    top50: RankedSubmission[], 
-    burned: number, 
-    distributed: number
-) {
   const supabase = createAdminClient();
   console.log(`🚀 Starting resolution for theme ${themeId}...`);
 
@@ -100,8 +92,8 @@ async function finishResolution(
   console.log("💰 Processing payouts and reputation atomically...");
   
   const { data: rpcResult, error: rpcError } = await supabase.rpc("process_weekly_payouts", {
-    p_payouts: payouts,
-    p_reputation_changes: reputationChanges
+    p_payouts: payouts as any,
+    p_reputation_changes: reputationChanges as any
   });
 
   if (rpcError) {
@@ -111,7 +103,7 @@ async function finishResolution(
     // For now, we log it and proceed to close the theme, but marked as potential partial failure could be better.
   }
 
-  const rpcStats = rpcResult as any;
+  const rpcStats = rpcResult as { burned: number; distributed: number; } | null;
   const stats = {
     totalCoinsBurned: rpcStats?.burned || 0,
     totalCoinsDistributed: rpcStats?.distributed || 0
@@ -123,7 +115,7 @@ async function finishResolution(
 
 async function finishResolution(
     themeId: string, 
-    top50: any[], 
+    top50: RankedSubmission[], 
     burned: number, 
     distributed: number
 ) {
@@ -142,7 +134,7 @@ async function finishResolution(
     .from("weekly_themes")
     .update({ 
       status: "finished", 
-      results_json,
+      results_json: results_json as any,
       resolved_at: new Date().toISOString()
     })
     .eq("id", themeId);

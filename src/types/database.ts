@@ -369,6 +369,7 @@ export type Database = {
       join_pod: {
         Args: {
           p_theme_id: string
+          p_user_id: string
         }
         Returns: Json
       }
@@ -401,8 +402,7 @@ export type Database = {
     }
   }
 }
-  }
-}
+
 
 export type Tables<
   PublicTableNameOrOptions extends
