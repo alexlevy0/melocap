@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { NavLink } from "@/components/ui/nav-link";
+import { Button } from "@/components/ui/button";
+import { Avatar } from "@/components/ui/avatar";
 import { Home, Trophy, BarChart3, User, Disc } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -52,16 +54,21 @@ export function Navigation() {
           <div className="flex items-center gap-4">
             {user ? (
               <Link href="/profile" className="flex items-center gap-3 pl-2 pr-4 py-1.5 rounded-full glass hover:bg-white/10 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500/20 to-secondary-500/20 border border-white/10 flex items-center justify-center">
-                  <User className="w-4 h-4 text-primary-300" />
-                </div>
+                <Avatar 
+                  size="sm" 
+                  src={user.user_metadata.avatar_url} 
+                  fallback={user.user_metadata.full_name || user.email} 
+                  status="online"
+                />
                 <span className="text-sm font-medium text-slate-200">
                   {t("profile")}
                 </span>
               </Link>
             ) : (
-              <Link href="/login" className="btn-primary text-sm py-2 px-4 shadow-lg shadow-primary-500/20">
-                {tAuth("login")}
+              <Link href="/login">
+                <Button size="sm" className="shadow-lg shadow-primary-500/20">
+                  {tAuth("login")}
+                </Button>
               </Link>
             )}
           </div>

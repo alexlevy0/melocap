@@ -29,6 +29,8 @@
 | `src/app/[locale]/(public)/leaderboard/page.tsx` | S1-05 | ✅ DONE |
 | `src/app/[locale]/(public)/results/page.tsx` | S1-05 | ✅ DONE |
 | `src/app/[locale]/(public)/page.tsx` | S1-05 | ✅ DONE |
+| `src/components/ui/*.tsx` | S1-06 | ✅ DONE |
+
 
 ### Décisions Techniques Prises
 

@@ -2,6 +2,10 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Countdown } from "@/components/ui/countdown";
+import { Card } from "@/components/ui/card";
+
 export default function HomePage() {
   const t = useTranslations("home");
   const tApp = useTranslations("app");
@@ -28,47 +32,53 @@ export default function HomePage() {
         </p>
 
         <div className="relative pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link 
-            href="/login" 
-            className="btn-primary flex items-center gap-2 py-4 px-8 text-lg hover:scale-105 transition-transform"
-          >
-            {t("cta.participate")}
-            <ArrowRight className="w-5 h-5" />
+          <Link href="/login">
+            <Button size="lg" className="text-lg px-8 py-6">
+              {t("cta.participate")}
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
           </Link>
           
-          <Link 
-            href="/results" 
-            className="text-slate-400 hover:text-white transition-colors underline-offset-4 hover:underline"
-          >
-            {t("cta.discover")}
+          <Link href="/results">
+            <Button variant="ghost" size="lg" className="text-slate-400 hover:text-white text-lg">
+              {t("cta.discover")}
+            </Button>
           </Link>
         </div>
       </div>
 
-      {/* Countdown / Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl">
+      {/* Countdown */}
+      <div className="w-full max-w-2xl">
+        <div className="text-center mb-4">
+          <h2 className="text-xl font-display font-medium text-slate-400">{t("countdown.title")}</h2>
+        </div>
+        <Countdown />
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-4 w-full max-w-4xl">
         <StatCard value="120+" label="Curators" delay={0} />
         <StatCard value="450" label="Tracks" delay={100} />
-        <StatCard value="42h" label={t("countdown.title")} delay={200} highlighted />
-        <StatCard value="12k" label="MeloCoins" delay={300} />
+        <StatCard value="12k" label="MeloCoins" delay={200} />
       </div>
 
     </main>
   );
 }
 
-function StatCard({ value, label, delay, highlighted = false }: { value: string; label: string; delay: number; highlighted?: boolean }) {
+function StatCard({ value, label, delay }: { value: string; label: string; delay: number }) {
   return (
-    <div 
-      className={`glass rounded-2xl p-6 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 fill-mode-backwards ${highlighted ? 'border-primary-500/50 bg-primary-500/5' : ''}`}
+    <Card 
+      variant="hover"
+      className="flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 fill-mode-backwards"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <span className={`text-3xl font-display font-bold ${highlighted ? 'gradient-text-primary' : 'text-white'}`}>
+      <span className="text-3xl font-display font-bold text-white">
         {value}
       </span>
       <span className="text-xs uppercase tracking-wider text-slate-500 mt-1">
         {label}
       </span>
-    </div>
+    </Card>
   );
 }

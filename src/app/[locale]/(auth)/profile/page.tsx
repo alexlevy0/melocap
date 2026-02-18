@@ -5,6 +5,10 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useCallback, useEffect, useState } from "react";
 import type { Database } from "@/types/database";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { LogOut, Wallet, Trophy } from "lucide-react";
 
 type UserProfile = Database["public"]["Tables"]["users"]["Row"];
 
@@ -73,24 +77,28 @@ export default function ProfilePage() {
         <h1 className="text-3xl font-display font-bold gradient-text-primary">
           {t("title")}
         </h1>
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={handleLogout}
-          className="text-sm text-slate-400 hover:text-white transition-colors"
+          className="text-slate-400 hover:text-white"
         >
+          <LogOut className="w-4 h-4 mr-2" />
           {tAuth("logout")}
-        </button>
+        </Button>
       </header>
 
       {profile && (
         <div className="max-w-4xl mx-auto w-full grid gap-6 md:grid-cols-2">
           {/* Identity Card */}
-          <div className="glass rounded-3xl p-6 flex flex-col items-center text-center space-y-4">
+          <Card className="p-6 flex flex-col items-center text-center space-y-4">
             <div className="relative">
               <div className="absolute inset-0 bg-primary-500 rounded-full blur-xl opacity-20"></div>
-              <img
-                src={profile.avatar_url || "/default-avatar.png"}
-                alt={profile.display_name}
-                className="relative w-24 h-24 rounded-full border-2 border-border object-cover"
+              <Avatar
+                size="xl"
+                src={profile.avatar_url}
+                fallback={profile.display_name || "User"}
+                className="relative border-2 border-surface-700"
               />
             </div>
             <div>
@@ -99,31 +107,33 @@ export default function ProfilePage() {
               </h2>
               <p className="text-sm text-slate-400">@{profile.spotify_id}</p>
             </div>
-          </div>
+          </Card>
 
           {/* Stats Card */}
           <div className="space-y-6">
-            <div className="glass rounded-3xl p-6 flex items-center justify-between">
+            <Card className="p-6 flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400 uppercase tracking-wider">
+                <p className="text-sm text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                  <Wallet className="w-4 h-4 text-secondary-500" />
                   {t("wallet")}
                 </p>
-                <p className="text-3xl font-display font-bold text-secondary-400">
-                  {profile.wallet_balance} 💰
+                <p className="text-3xl font-display font-bold text-secondary-400 mt-2">
+                  {profile.wallet_balance}
                 </p>
               </div>
-            </div>
+            </Card>
 
-            <div className="glass rounded-3xl p-6 flex items-center justify-between">
+            <Card className="p-6 flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400 uppercase tracking-wider">
+                <p className="text-sm text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-accent-500" />
                   {t("reputation")}
                 </p>
-                <p className="text-3xl font-display font-bold text-accent-400">
-                  {profile.reputation_score} 🏆
+                <p className="text-3xl font-display font-bold text-accent-400 mt-2">
+                  {profile.reputation_score}
                 </p>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       )}

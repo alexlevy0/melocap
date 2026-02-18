@@ -4,7 +4,7 @@
 
 | Sprint | Nom                    | Semaines | Statut |
 | ------ | ---------------------- | -------- | ------ |
-| 1      | Fondations             | 1-2      | � WIP |
+| 1      | Fondations             | 1-2      | ✅ DONE |
 | 2      | Moteur de Jeu          | 3-4      | 🔲 TODO |
 | 3      | Économie & Vote        | 5-6      | 🔲 TODO |
 | 4      | Social & Polish        | 7-8      | 🔲 TODO |
@@ -57,11 +57,11 @@ Setup complet du projet, authentification Spotify, schéma BDD, pages de base.
 - **Fichiers créés** : `src/app/[locale]/layout.tsx`, `src/app/[locale]/(public)/page.tsx`, `src/app/[locale]/(auth)/profile/page.tsx`, `src/components/layout/Navigation.tsx`
 
 #### S1-06 : Composants UI de Base
-- [ ] `<Button>` (pill-shape, variantes primary/secondary/accent)
-- [ ] `<Card>` (conteneur arrondi, glassmorphism)
-- [ ] `<Countdown>` (compte à rebours stylisé avec flip animation)
-- [ ] `<Avatar>` (photo Spotify, cercle lumineux)
-- [ ] `<Badge>` (pour les MeloCoins, rang, etc.)
+- [x] `<Button>` (pill-shape, variantes primary/secondary/accent)
+- [x] `<Card>` (conteneur arrondi, glassmorphism)
+- [x] `<Countdown>` (compte à rebours stylisé avec flip animation)
+- [x] `<Avatar>` (photo Spotify, cercle lumineux)
+- [x] `<Badge>` (pour les MeloCoins, rang, etc.)
 - **Fichiers créés** : `src/components/ui/*.tsx`
 
 ---
