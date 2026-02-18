@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { Navigation } from "@/components/layout/Navigation";
 import "@/styles/globals.css";
 
 const inter = Inter({
@@ -70,7 +71,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         className={`${inter.variable} ${outfit.variable} font-sans bg-surface-900 text-white antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Navigation />
+          <div className="pt-16 pb-20 md:pb-0 min-h-screen">
+            {children}
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

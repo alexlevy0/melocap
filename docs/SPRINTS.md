@@ -4,7 +4,7 @@
 
 | Sprint | Nom                    | Semaines | Statut |
 | ------ | ---------------------- | -------- | ------ |
-| 1      | Fondations             | 1-2      | 🔲 TODO |
+| 1      | Fondations             | 1-2      | � WIP |
 | 2      | Moteur de Jeu          | 3-4      | 🔲 TODO |
 | 3      | Économie & Vote        | 5-6      | 🔲 TODO |
 | 4      | Social & Polish        | 7-8      | 🔲 TODO |
@@ -19,42 +19,42 @@ Setup complet du projet, authentification Spotify, schéma BDD, pages de base.
 ### Tickets
 
 #### S1-01 : Init Projet Next.js
-- [ ] `npx create-next-app@latest melocaps --typescript --tailwind --app --src-dir`
-- [ ] Configurer `tsconfig.json` en mode strict
-- [ ] Installer les dépendances : `@supabase/supabase-js`, `@supabase/ssr`, `zod`, `next-intl`
-- [ ] Configurer Tailwind avec la palette MeloCaps (violet, orange, cyan)
-- [ ] Mettre en place la structure de dossiers décrite dans `CURSOR_RULES.md`
+- [x] `npx create-next-app@latest melocaps --typescript --tailwind --app --src-dir`
+- [x] Configurer `tsconfig.json` en mode strict
+- [x] Installer les dépendances : `@supabase/supabase-js`, `@supabase/ssr`, `zod`, `next-intl`
+- [x] Configurer Tailwind avec la palette MeloCaps (violet, orange, cyan)
+- [x] Mettre en place la structure de dossiers décrite dans `CURSOR_RULES.md`
 - **Fichiers créés** : `tailwind.config.ts`, `src/styles/globals.css`, structure de base
 
 #### S1-02 : Setup Supabase
-- [ ] Créer le projet Supabase
-- [ ] Configurer les variables d'env (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, etc.)
-- [ ] Créer le client Supabase (browser + server) dans `src/lib/supabase/`
-- [ ] Créer le middleware d'auth Supabase pour Next.js
+- [x] Créer le projet Supabase
+- [x] Configurer les variables d'env (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, etc.)
+- [x] Créer le client Supabase (browser + server) dans `src/lib/supabase/`
+- [x] Créer le middleware d'auth Supabase pour Next.js
 - **Fichiers créés** : `src/lib/supabase/client.ts`, `src/lib/supabase/server.ts`, `src/middleware.ts`
 
 #### S1-03 : Auth Spotify via Supabase
-- [ ] Configurer le provider Spotify dans Supabase Dashboard
-- [ ] Scopes requis : `user-read-email`, `playlist-modify-public`, `playlist-modify-private`
-- [ ] Page `/login` avec bouton "Se connecter avec Spotify"
-- [ ] Callback handler `/auth/callback`
-- [ ] Stockage sécurisé du `provider_token` (token Spotify) dans la table `users`
-- [ ] Middleware : rediriger vers `/login` si non authentifié
+- [x] Configurer le provider Spotify dans Supabase Dashboard
+- [x] Scopes requis : `user-read-email`, `playlist-modify-public`, `playlist-modify-private`
+- [x] Page `/login` avec bouton "Se connecter avec Spotify"
+- [x] Callback handler `/auth/callback`
+- [x] Stockage sécurisé du `provider_token` (token Spotify) dans la table `users`
+- [x] Middleware : rediriger vers `/login` si non authentifié
 - **Fichiers créés** : `src/app/[locale]/(public)/login/page.tsx`, `src/app/auth/callback/route.ts`
 
 #### S1-04 : Schéma Base de Données
-- [ ] Exécuter les migrations SQL (voir `docs/DATABASE.md`)
-- [ ] Activer RLS sur toutes les tables
-- [ ] Créer les policies RLS de base
-- [ ] Créer un trigger `on_auth_user_created` pour insérer dans `public.users`
+- [x] Exécuter les migrations SQL (voir `docs/DATABASE.md`)
+- [x] Activer RLS sur toutes les tables
+- [x] Créer les policies RLS de base
+- [x] Créer un trigger `on_auth_user_created` pour insérer dans `public.users`
 - **Fichiers créés** : `supabase/migrations/001_initial_schema.sql`
 
 #### S1-05 : Pages de Base & Layout
-- [ ] Layout principal (Header avec logo, navigation, avatar)
-- [ ] Page d'accueil avec compte à rebours "The Drop in X Days..."
-- [ ] Page Profil (avatar Spotify, nom, wallet balance, stats)
-- [ ] i18n : fichiers `fr.json` et `en.json` avec les textes de base
-- **Fichiers créés** : `src/app/[locale]/layout.tsx`, `src/app/[locale]/(public)/page.tsx`, `src/app/[locale]/(auth)/profile/page.tsx`
+- [x] Layout principal (Header avec logo, navigation, avatar)
+- [x] Page d'accueil avec compte à rebours "The Drop in X Days..."
+- [x] Page Profil (avatar Spotify, nom, wallet balance, stats)
+- [x] i18n : fichiers `fr.json` et `en.json` avec les textes de base
+- **Fichiers créés** : `src/app/[locale]/layout.tsx`, `src/app/[locale]/(public)/page.tsx`, `src/app/[locale]/(auth)/profile/page.tsx`, `src/components/layout/Navigation.tsx`
 
 #### S1-06 : Composants UI de Base
 - [ ] `<Button>` (pill-shape, variantes primary/secondary/accent)

@@ -6,22 +6,17 @@
   },
   "nav": {
     "home": "Accueil",
-    "profile": "Profil",
     "leaderboard": "Classement",
-    "results": "Résultats"
-  },
-  "auth": {
-    "login": "Se connecter avec Spotify",
-    "logout": "Se déconnecter",
-    "connecting": "Connexion en cours...",
-    "welcome": "Bienvenue, {name} !",
-    "loginTitle": "Rejoins la curation",
-    "loginSubtitle": "Connecte-toi avec Spotify pour participer",
-    "loginDescription": "MeloCaps utilise ton compte Spotify pour t'identifier. Aucune lecture automatique, aucun accès à ta bibliothèque."
+    "results": "Résultats",
+    "profile": "Profil"
   },
   "home": {
+    "cta": {
+      "participate": "Rejoindre un Pod",
+      "discover": "Voir les résultats"
+    },
     "countdown": {
-      "title": "The Drop in",
+      "title": "Prochain Drop",
       "days": "jours",
       "hours": "heures",
       "minutes": "minutes",
@@ -32,11 +27,34 @@
     "theme": {
       "current": "Thème de la semaine",
       "upcoming": "Prochain thème"
-    },
-    "cta": {
-      "discover": "Découvrir les sons de demain",
-      "participate": "Participer à la curation"
     }
+  },
+  "leaderboard": {
+    "title": "Top Curateurs",
+    "subtitle": "Les meilleurs dénicheurs de talents de la semaine.",
+    "rank": "#",
+    "curator": "Curateur",
+    "reputation": "Réputation",
+    "predictions": "Victoires"
+  },
+  "results": {
+    "title": "Résultats Drop #{week}",
+    "score": "{score} pts",
+    "backers": "{count} soutiens",
+    "rank": "#{rank}",
+    "listenOnSpotify": "Écouter sur Spotify",
+    "myPredictions": "Mes prédictions cette semaine",
+    "earned": "MeloCoins gagnés",
+    "burned": "Coins brûlés"
+  },
+  "auth": {
+    "login": "Se connecter avec Spotify",
+    "logout": "Se déconnecter",
+    "connecting": "Connexion en cours...",
+    "welcome": "Bienvenue, {name} !",
+    "loginTitle": "Rejoins la curation",
+    "loginSubtitle": "Connecte-toi avec Spotify pour participer",
+    "loginDescription": "MeloCaps utilise ton compte Spotify pour t'identifier. Aucune lecture automatique, aucun accès à ta bibliothèque."
   },
   "pod": {
     "title": "Pod #{number}",
@@ -70,24 +88,6 @@
     "reputation": "Score de Réputation",
     "history": "Historique des prédictions",
     "edit": "Modifier le profil"
-  },
-  "results": {
-    "title": "Top 50 — Semaine {week}",
-    "rank": "#{rank}",
-    "score": "{score} pts",
-    "backers": "{count} curateurs",
-    "listenOnSpotify": "Écouter sur Spotify",
-    "myPredictions": "Mes prédictions cette semaine",
-    "earned": "MeloCoins gagnés",
-    "burned": "Coins brûlés"
-  },
-  "leaderboard": {
-    "title": "Tableau d'Honneur",
-    "subtitle": "Les meilleurs curateurs de la semaine",
-    "rank": "Rang",
-    "curator": "Curateur",
-    "reputation": "Réputation",
-    "predictions": "Prédictions réussies"
   },
   "coins": {
     "meloCoin": "MeloCoin",

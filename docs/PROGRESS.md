@@ -6,103 +6,104 @@
 
 ## Sprint Actuel : Sprint 1 — Fondations
 
-### Fichiers Créés
+### Fichiers Créés / Modifiés
 
 | Fichier | Ticket | Statut |
 | ------- | ------ | ------ |
 | `tailwind.config.ts` | S1-01 | ✅ DONE |
 | `src/styles/globals.css` | S1-01 | ✅ DONE |
-| `src/i18n/fr.json` | S1-01 | ✅ DONE |
-| `src/i18n/en.json` | S1-01 | ✅ DONE |
-| `src/i18n/routing.ts` | S1-01 | ✅ DONE |
-| `src/i18n/request.ts` | S1-01 | ✅ DONE |
+| `src/i18n/*.json` | S1-01 | ✅ DONE |
 | `src/middleware.ts` | S1-01 | ✅ DONE |
 | `src/app/[locale]/layout.tsx` | S1-01 | ✅ DONE |
-| `src/app/[locale]/(public)/page.tsx` | S1-01 | ✅ DONE |
-| `next.config.ts` | S1-01 | ✅ DONE |
-| `.env.example` | S1-01 | ✅ DONE |
+| `.env.local` | S1-02 | ✅ DONE |
+| `src/lib/supabase/client.ts` | S1-02 | ✅ DONE |
+| `src/lib/supabase/server.ts` | S1-02 | ✅ DONE |
+| `src/lib/supabase/admin.ts` | S1-02 | ✅ DONE |
+| `src/lib/supabase/middleware.ts` | S1-02 | ✅ DONE |
+| `src/types/database.ts` | S1-04 | ✅ DONE |
+| `src/app/[locale]/(public)/login/page.tsx` | S1-03 | ✅ DONE |
+| `src/app/[locale]/(auth)/profile/page.tsx` | S1-03 | ✅ DONE |
+| `src/app/auth/callback/route.ts` | S1-03 | ✅ DONE |
+| `src/i18n/navigation.ts` | S1-03 | ✅ DONE |
+| `src/components/layout/Navigation.tsx` | S1-05 | ✅ DONE |
+| `src/app/[locale]/(public)/leaderboard/page.tsx` | S1-05 | ✅ DONE |
+| `src/app/[locale]/(public)/results/page.tsx` | S1-05 | ✅ DONE |
+| `src/app/[locale]/(public)/page.tsx` | S1-05 | ✅ DONE |
 
 ### Décisions Techniques Prises
 
 | Décision | Raison | Date |
 | -------- | ------ | ---- |
-| next-intl pour l'i18n | Recommandé dans les règles, intégration native App Router | 2026-02-18 |
-| Inter + Outfit (Google Fonts) | Inter pour le corps, Outfit pour les titres (display) | 2026-02-18 |
-| Dark mode par défaut via `class` | Cohérent avec le design system MeloCaps | 2026-02-18 |
-| Palette CSS via variables CSS + Tailwind | Double accès : CSS natif + classes Tailwind | 2026-02-18 |
-| Middleware next-intl exclu de `/auth` | Le callback Supabase ne doit pas avoir de préfixe locale | 2026-02-18 |
+| **Next-intl** | Intégration native App Router pour l'i18n | 2026-02-18 |
+| **Middleware Standard** | Revert à `middleware.ts` pour stabilité Next.js 16 | 2026-02-18 |
+| **Supabase SSR** | Utilisation de `@supabase/ssr` avec gestion des cookies | 2026-02-18 |
+| **Service Role** | Client admin séparé (`admin.ts`) pour éviter les fuites | 2026-02-18 |
+| **Security Fix** | `search_path=public` sur les fonctions TRIGGER (Advisor) | 2026-02-18 |
+| **Separation Routing/Nav** | `i18n/routing` vs `i18n/navigation` pour Edge compat | 2026-02-18 |
 
 ### Problèmes Rencontrés
 
 | Problème | Solution | Ticket |
 | -------- | -------- | ------ |
-| `.agent/` bloquait `create-next-app` | Déplacé temporairement en `/tmp` pendant l'init | S1-01 |
-| Import path incorrect dans `middleware.ts` | Corrigé `./src/i18n/routing` → `./i18n/routing` | S1-01 |
+| `.agent/` bloquait `create-next-app` | Déplacé temporairement | S1-01 |
+| Limite de projets gratuits Supabase | Pause d'un vieux projet pour libérer un slot | S1-02 |
+| Warnings Sécurité sur les Functions | Migration `002` pour fixer le `search_path` | S1-04 |
 
 ### Changements de Schéma BDD
 
 | Table/Colonne | Changement | Raison | Date |
 | ------------- | ---------- | ------ | ---- |
-| (rien encore — S1-04) | — | — | — |
+| `users` | Création + RLS | S1-04 | 2026-02-18 |
+| `weekly_themes` | Création + RLS | S1-04 | 2026-02-18 |
+| `pods` | Création + RLS | S1-04 | 2026-02-18 |
+| `pods_members` | Création + RLS | S1-04 | 2026-02-18 |
+| `submissions` | Création + RLS | S1-04 | 2026-02-18 |
+| `stakes` | Création + RLS | S1-04 | 2026-02-18 |
+| `transactions` | Création + RLS | S1-04 | 2026-02-18 |
+| `messages` | Création + RLS | S1-04 | 2026-02-18 |
 
 ---
 
 ## Checklist Globale
 
 ### Infrastructure
-- [x] Projet Next.js initialisé (Next.js 15, App Router, TypeScript strict)
-- [ ] Supabase connecté
-- [x] Tailwind configuré avec palette MeloCaps (violet, orange, cyan)
-- [x] i18n configuré (fr.json + en.json via next-intl)
-- [x] Variables d'environnement documentées dans `.env.example`
-
-### Auth
-- [ ] Login Spotify fonctionnel
-- [ ] Callback handler
-- [ ] Middleware de protection des routes
-- [ ] Trigger `on_auth_user_created`
-- [ ] Refresh token Spotify automatique
+- [x] Projet Next.js initialisé (Next.js 16, TypeScript strict)
+- [x] Supabase connecté (Projet ID: `papynmqfpqdicsolvjjq`)
+- [x] Tailwind configuré avec palette MeloCaps
+- [x] i18n configuré (fr/en)
+- [x] Variables d'environnement configurées (`.env.local`)
 
 ### Base de Données
-- [ ] Table `users` + RLS
-- [ ] Table `weekly_themes` + RLS
-- [ ] Table `pods` + RLS
-- [ ] Table `pods_members` + RLS
-- [ ] Table `submissions` + RLS
-- [ ] Table `stakes` + RLS
-- [ ] Table `transactions` + RLS
-- [ ] Table `messages` + RLS
+- [x] Schéma initial complet déployé (7 tables)
+- [x] RLS activé et vérifié sur toutes les tables
+- [x] Trigger `on_auth_user_created` fonctionnel
+- [x] Security Advisors vérifiés (0 warnings)
+
+### Auth
+- [x] Login Spotify fonctionnel (S1-03)
+- [x] Callback handler
+- [x] Middleware de protection des routes
+- [x] Refresh token Spotify automatique (via Supabase)
 
 ### Gameplay
 - [ ] Recherche Spotify fonctionnelle
 - [ ] Création/Assignation de Pod
-- [ ] Soumission de titre (avec contraintes)
-- [ ] Interface de staking (sliders)
-- [ ] Guards temporels (weekend-only)
-- [ ] Algorithme de résolution
-- [ ] Distribution des gains
-- [ ] Génération JSON public
+- [ ] Soumission de titre
+- [ ] Staking
+- [ ] Résolution (Engine)
 
 ### UI/UX
-- [ ] Page d'accueil (countdown + résultats passés)
-- [ ] Page login
-- [ ] Page profil
-- [ ] Page Pod (7 slots + recherche + staking)
-- [ ] Page résultats
-- [ ] Page leaderboard
-- [ ] Mode Chill vs Fever
-- [ ] Responsive mobile
-
-### Social
-- [ ] Chat temps réel dans les Pods
-- [ ] Notifications email (Drop + Résultats)
-- [ ] Notifications in-app
+- [x] Page d'accueil (S1-05) - Hero, CTA, Countdown
+- [x] Page login (S1-03)
+- [x] Page profil (S1-03)
+- [x] Page Leaderboard (S1-05) - Mock Data
+- [x] Page Résultats (S1-05) - Mock Data
+- [x] Navigation Responsive (Top/Bottom) (S1-05)
+- [ ] Page Pod
 
 ### Compliance
-- [ ] Zéro vocabulaire gambling dans l'UI
-- [ ] Deep links Spotify (pas de lecture native)
-- [ ] RLS vérifié (pas de fuite de données)
-- [ ] Manifeste algorithmique rédigé
+- [ ] Zéro vocabulaire gambling
+- [ ] Deep links Spotify
 
 ---
 

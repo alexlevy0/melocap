@@ -1,0 +1,74 @@
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+
+export default function LoginPage() {
+  const t = useTranslations("auth");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async () => {
+    try {
+      setIsLoading(true);
+      const supabase = createClient();
+      
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "spotify",
+        options: {
+          // Redirect to the auth callback route
+          redirectTo: `${globalThis.location.origin}/auth/callback`,
+          // Request scopes for playlist modification (future features)
+          scopes: "user-read-email playlist-modify-public playlist-modify-private",
+        },
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error("Login error:", error);
+      setIsLoading(false);
+    }
+    // No finally { setIsLoading(false) } because we redirect away on success
+  };
+
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-surface-900">
+      <div className="w-full max-w-md space-y-8 text-center">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-display font-bold gradient-text-primary">
+            {t("loginTitle")}
+          </h1>
+          <p className="text-slate-400">{t("loginSubtitle")}</p>
+        </div>
+
+        <div className="p-8 glass rounded-3xl space-y-6">
+          <button
+            onClick={handleLogin}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-3 py-3 px-6 bg-[#1DB954] hover:bg-[#1ed760] text-white font-bold rounded-full transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-[#1DB954]/40"
+          >
+            {isLoading ? (
+              <span>{t("connecting")}</span>
+            ) : (
+              <>
+                <svg
+                  className="w-6 h-6"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.299z" />
+                </svg>
+                <span>{t("login")}</span>
+              </>
+            )}
+          </button>
+
+          <p className="text-xs text-slate-500 max-w-xs mx-auto">
+            {t("loginDescription")}
+          </p>
+        </div>
+      </div>
+    </main>
+  );
+}
