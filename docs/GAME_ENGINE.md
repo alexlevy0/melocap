@@ -168,23 +168,34 @@ function calculateROI(rank: number): number {
 
 ---
 
+### Étape 5 : Exécution Atomique (RPC)
+
+Pour garantir l'intégrité des données, l'écriture des résultats se fait via une Remote Procedure Call (RPC) PostgreSQL `process_weekly_payouts`.
+
+Ceci assure que :
+1. Les résultats des mises sont mis à jour (`won`/`lost`, `payout`).
+2. Les balances des utilisateurs sont créditées des gains.
+3. Les scores de réputation sont mis à jour.
+4. **Tout ou rien** : si une partie échoue, la transaction est annulée.
+
+---
+
 ## Output
 
 ```typescript
-interface ResolveOutput {
-  rankedSubmissions: RankedSubmission[]  // Toutes les soumissions classées
-  top50: RankedSubmission[]             // Le Top 50 uniquement
-  payouts: Payout[]                     // Gains/pertes par stake
-  reputationChanges: ReputationChange[] // Changements de réputation
-  metadata: {
-    totalSubmissions: number
-    totalStakes: number
-    totalCoinsStaked: number
-    totalCoinsBurned: number
-    totalCoinsDistributed: number
-    codeHash: string                    // Hash SHA-256 du code de résolution
-    resolvedAt: string                  // ISO timestamp
-  }
+export interface RankedSubmission extends Submission {
+  globalScore: number;
+  backerCount: number;
+  globalRank: number;
+}
+
+export interface WeeklyResults {
+  top50: RankedSubmission[];
+  stats: {
+    totalCoinsBurned: number;      // Uniquement les sommes des mises PERDUES
+    totalCoinsDistributed: number; // Somme des payouts versés aux gagnants
+    resolvedAt: string;
+  };
 }
 ```
 

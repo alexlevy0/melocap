@@ -114,37 +114,37 @@ Wallet de MeloCoins, interface de staking, algorithme de résolution.
 ### Tickets
 
 #### S3-01 : Wallet & Distribution Hebdomadaire
-- [ ] Colonne `wallet_balance` dans `users` (déjà créée)
-- [ ] Edge Function CRON : vendredi 19h → +100 MeloCoins à tous les users
-- [ ] Composant `<WalletBadge>` dans le header (affiche le solde en temps réel)
-- [ ] Table `transactions` pour tracer chaque mouvement de coins
+- [x] Colonne `wallet_balance` dans `users` (déjà créée)
+- [x] Edge Function CRON : vendredi 19h → +100 MeloCoins à tous les users (via RPC `distribute_weekly_coins`)
+- [x] Composant `<WalletBadge>` dans le header (affiche le solde en temps réel)
+- [x] Table `transactions` pour tracer chaque mouvement de coins
 
 #### S3-02 : Interface de Staking
-- [ ] Page Pod mise à jour : une fois tous les titres soumis, afficher la zone de staking
-- [ ] Composant `<StakeSlider>` : slider pour chaque titre du Pod
-- [ ] Affichage du solde restant en temps réel
-- [ ] Validation : impossible de miser plus que son solde
-- [ ] Endpoint `/api/stakes/create` : enregistre les mises (avec transaction BDD)
+- [x] Page Pod mise à jour : une fois tous les titres soumis, afficher la zone de staking
+- [x] Composant `<StakeSlider>` : slider pour chaque titre du Pod
+- [x] Affichage du solde restant en temps réel
+- [x] Validation : impossible de miser plus que son solde (Check Client + Serveur Atomic)
+- [x] Endpoint `/api/stakes/create` : enregistre les mises (avec transaction BDD via RPC `save_stakes`)
 
 #### S3-03 : Algorithme de Résolution (Game Engine)
-- [ ] Fichier `src/lib/game-engine/resolve.ts` (DOIT être pur, sans side effects, testable)
-- [ ] Input : toutes les submissions + tous les stakes de la semaine
-- [ ] Output : classement trié par score pondéré, top 50, gains/pertes par user
-- [ ] Tests unitaires exhaustifs (`resolve.test.ts`)
-- [ ] Voir `docs/GAME_ENGINE.md` pour les formules exactes
+- [x] Fichier `src/lib/game-engine/resolve.ts` (DOIT être pur, sans side effects, testable)
+- [x] Input : toutes les submissions + tous les stakes de la semaine
+- [x] Output : classement trié par score pondéré, top 50, gains/pertes par user
+- [x] Tests unitaires exhaustifs (`resolve.test.ts`)
+- [x] Voir `docs/GAME_ENGINE.md` pour les formules exactes
 
 #### S3-04 : Edge Function de Résolution
-- [ ] CRON dimanche 19h : exécuter l'algorithme de résolution
-- [ ] Mettre à jour les wallets (gains/pertes)
-- [ ] Mettre à jour le statut du thème → "finished"
-- [ ] Générer le fichier JSON public `results_week_XX.json`
-- [ ] Logger le hash du code utilisé dans le JSON
+- [x] CRON dimanche 19h : exécuter l'algorithme de résolution
+- [x] Mettre à jour les wallets (gains/pertes) via RPC `process_weekly_payouts`
+- [x] Mettre à jour le statut du thème → "finished"
+- [x] Générer le fichier JSON public `results_week_XX.json` (stocké dans `weekly_themes.results_json`)
+- [x] Logger le hash du code utilisé dans le JSON
 
 #### S3-05 : Page Résultats
-- [ ] Page `/results` : affiche le Top 50 de la semaine
-- [ ] Classement avec pochettes, artistes, score
-- [ ] Section personnelle : "Tes mises cette semaine" avec gains/pertes
-- [ ] Lien "Écouter sur Spotify" pour chaque titre
+- [x] Page `/results` : affiche le Top 50 de la semaine
+- [x] Classement avec pochettes, artistes, score
+- [x] Section personnelle : "Tes mises cette semaine" avec gains/pertes
+- [x] Lien "Écouter sur Spotify" pour chaque titre
 
 ---
 

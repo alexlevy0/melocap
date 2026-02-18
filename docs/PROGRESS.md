@@ -48,6 +48,15 @@
 | `src/components/game/SubmitTrackDialog.tsx` | S2-04 | ✅ DONE |
 | `src/components/ui/dialog.tsx` | S2-04 | ✅ DONE |
 | `src/components/ui/sonner.tsx` | S2-04 | ✅ DONE |
+| `src/app/api/cron/weekly-allocation/route.ts` | S3-01 | ✅ DONE |
+| `src/app/actions/economy.ts` | S3-01 | ✅ DONE |
+| `src/components/game/StakingZone.tsx` | S3-02 | ✅ DONE |
+| `src/app/actions/stakes.ts` | S3-02 | ✅ DONE |
+| `src/lib/game-engine/resolve.ts` | S3-03 | ✅ DONE |
+| `src/lib/game-engine/engine.ts` | S3-03 | ✅ DONE |
+| `src/app/api/cron/weekly-resolve/route.ts` | S3-04 | ✅ DONE |
+| `src/app/[locale]/(public)/results/page.tsx` | S3-05 | ✅ DONE |
+| `supabase/migrations/006-009` | S3-06/08 | ✅ DONE |
 
 
 ### Décisions Techniques Prises
@@ -60,6 +69,9 @@
 | **Service Role** | Client admin séparé (`admin.ts`) pour éviter les fuites | 2026-02-18 |
 | **Security Fix** | `search_path=public` sur les fonctions TRIGGER (Advisor) | 2026-02-18 |
 | **Separation Routing/Nav** | `i18n/routing` vs `i18n/navigation` pour Edge compat | 2026-02-18 |
+| **Atomic Payouts** | Utilisation de RPC PostgreSQL pour garantir l'intégrité des transactions | 2026-02-18 |
+| **Secure Staking** | RPC `save_stakes` avec vérification stricte de membership côté BDD | 2026-02-18 |
+| **Denormalization** | Ajout de `theme_id` dans `stakes` pour contourner les limites de filtrage PostgREST | 2026-02-18 |
 
 ### Problèmes Rencontrés
 

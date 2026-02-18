@@ -47,38 +47,26 @@ export async function distributeWeeklyCoins() {
     total: users.length
   };
 
-  // 2. Process each user (for small scale, loop is okay. For thousands, use RPC/Bulk)
-  for (const user of users) {
-    try {
-      const newBalance = (user.wallet_balance || 0) + allocationAmount;
+  // 2. Process using Atomic RPC (Batch Processing)
+  const { data: rpcResult, error: rpcError } = await adminSupabase.rpc("distribute_weekly_coins", {
+    p_amount: allocationAmount
+  });
 
-      // Update user balance
-      const { error: updateError } = await adminSupabase
-        .from("users")
-        .update({ wallet_balance: newBalance })
-        .eq("id", user.id);
-
-      if (updateError) throw updateError;
-
-      // Log transaction
-      const { error: transError } = await adminSupabase
-        .from("transactions")
-        .insert({
-          user_id: user.id,
-          type: "weekly_allocation",
-          amount: allocationAmount,
-          balance_after: newBalance,
-          description: `Weekly allocation Support Drop`
-        });
-
-      if (transError) throw transError;
-
-      results.success++;
-    } catch (err) {
-      console.error(`Failed to distribute coins to ${user.id}:`, err);
-      results.failed++;
-    }
+  if (rpcError) {
+    console.error("Failed to distribute coins (RPC Error):", rpcError);
+    throw new Error(rpcError.message || "Failed to distribute coins");
   }
+
+  // Cast the result to the expected format since rpc returns any/Json
+  const data = rpcResult as any;
+
+  // Since it's all or nothing in the transaction unless we handle partials inside:
+  // Our RPC returns { success: boolean, users_processed: number }
+  const totalProcessed = data?.users_processed || 0;
+  
+  results.success = totalProcessed;
+  results.failed = 0; // RPC is atomic, so if it succeeds, 0 failed. If it fails, it throws.
+  results.total = users.length;
 
   revalidatePath("/");
   return results;

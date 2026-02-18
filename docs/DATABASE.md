@@ -212,11 +212,13 @@ CREATE TABLE public.stakes (
   amount INTEGER NOT NULL CHECK (amount > 0),
   result TEXT,                     -- 'won' | 'lost' | null (en attente)
   payout INTEGER DEFAULT 0,       -- Montant gagné (0 si perdu)
+  theme_id UUID REFERENCES public.weekly_themes(id), -- Dénormalisation pour optimiser les queries
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX idx_stakes_user ON public.stakes(user_id);
 CREATE INDEX idx_stakes_submission ON public.stakes(submission_id);
+CREATE INDEX idx_stakes_theme ON public.stakes(theme_id);
 
 ALTER TABLE public.stakes ENABLE ROW LEVEL SECURITY;
 
@@ -233,8 +235,7 @@ CREATE POLICY "stakes_select" ON public.stakes
     )
   );
 
-CREATE POLICY "stakes_insert_own" ON public.stakes
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+-- INSERT géré via RPC pour atomicité (save_stakes)
 ```
 
 **Important** : Les mises des autres joueurs sont **invisibles** tant que le thème n'est pas `locked`. Cela empêche le "copy-staking".
@@ -298,6 +299,33 @@ CREATE POLICY "messages_select_pod" ON public.messages
 CREATE POLICY "messages_insert_own" ON public.messages
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 ```
+
+---
+
+## RPCs (Remote Procedure Calls)
+
+Fonctions PostgreSQL pour garantir l'atomicité des opérations critiques.
+
+### `save_stakes`
+Sauvegarde atomique des mises d'un utilisateur pour un pod.
+- Vérifie que le thème est `open`.
+- **NOUVEAU** : Vérifie que l'utilisateur est bien membre du pod.
+- Vérifie le solde suffisant.
+- Efface les anciennes mises de l'utilisateur dans ce pod.
+- Insère les nouvelles mises.
+- Débite le wallet.
+
+### `distribute_weekly_coins`
+Allocation hebdomadaire de MeloCoins.
+- Parcourt tous les utilisateurs par batch.
+- Ajoute le montant (défaut 100) au wallet.
+- Crée une transaction `weekly_allocation`.
+
+### `process_weekly_payouts`
+Traitement atomique des résultats de la semaine.
+- Met à jour le statut `result` et `payout` de chaque stake.
+- Pour les gagnants : crédite le wallet et crée une transaction `stake_won`.
+- Met à jour le score de réputation des utilisateurs.
 
 ---
 

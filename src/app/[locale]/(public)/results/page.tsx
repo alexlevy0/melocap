@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { PerformanceSummary } from "@/components/game/PerformanceSummary";
 import { Top50List } from "@/components/game/Top50List";
 
+import { WeeklyResults } from "@/lib/game-engine/resolve";
+
 export default async function ResultsPage() {
   const t = await getTranslations("results");
   const supabase = await createClient();
@@ -38,27 +40,25 @@ export default async function ResultsPage() {
   };
 
   if (user) {
-    // Fetch user stakes for pods belonging to this theme
-    // Join: stakes -> submissions -> pods -> theme
+    // Fetch user stakes for this theme directly using the denormalized theme_id
     const { data: userStakes } = await supabase
       .from("stakes")
       .select(`
         id,
         amount,
         payout,
-        result,
-        submission:submissions!inner (
-          pod:pods!inner (
-            theme_id
-          )
-        )
+        result
       `)
       .eq("user_id", user.id)
-      .eq("submission.pod.theme_id", theme.id);
+      .eq("theme_id", theme.id);
 
     if (userStakes && userStakes.length > 0) {
       personalStats.earned = userStakes.reduce((sum, s) => sum + (s.payout || 0), 0);
-      personalStats.burned = userStakes.reduce((sum, s) => sum + s.amount, 0);
+      
+      // Fix: Burned only includes LOST stakes
+      personalStats.burned = userStakes
+        .filter(s => s.result !== "won")
+        .reduce((sum, s) => sum + s.amount, 0);
       
       const wins = userStakes.filter(s => s.result === "won").length;
       personalStats.successRate = wins / userStakes.length;
@@ -69,8 +69,9 @@ export default async function ResultsPage() {
     }
   }
 
-  // 3. Extract Top 50 from JSON
-  const topTracks = (theme.results_json as any)?.top50 || [];
+  // 3. Extract Top 50 from JSON with Strict Typing
+  const resultsData = theme.results_json as unknown as WeeklyResults | null;
+  const topTracks = resultsData?.top50 || [];
 
   return (
     <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-12">

@@ -149,3 +149,12 @@ export function calculateReputationChanges(payouts: Payout[]): ReputationChange[
     delta,
   }));
 }
+
+export interface WeeklyResults {
+  top50: RankedSubmission[];
+  stats: {
+    totalCoinsBurned: number;
+    totalCoinsDistributed: number;
+    resolvedAt: string;
+  };
+}

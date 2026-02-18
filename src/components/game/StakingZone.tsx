@@ -25,6 +25,7 @@ export function StakingZone({
   walletBalance
 }: StakingZoneProps) {
   const t = useTranslations("pod");
+  const tErrors = useTranslations("errors"); // Fix for broken error keys
   const [isSaving, setIsSaving] = useState(false);
   
   // Local state for stakes: Record<submissionId, amount>
@@ -61,7 +62,7 @@ export function StakingZone({
       toast.success(t("actions.save_predictions_success") || "Predictions saved!");
     } catch (error) {
       console.error("Failed to save stakes:", error);
-      toast.error(t("errors.generic"));
+      toast.error(tErrors("generic"));
     } finally {
       setIsSaving(false);
     }
@@ -113,7 +114,7 @@ export function StakingZone({
       <div className="mt-10 flex justify-end items-center gap-4">
         {remainingBalance < 0 && (
           <span className="text-sm font-medium text-red-400 animate-pulse">
-            {t("errors.insufficientCoins")}
+            {tErrors("insufficientCoins")}
           </span>
         )}
         <Button 

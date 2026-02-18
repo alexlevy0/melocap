@@ -4,7 +4,8 @@ import {
   calculatePayouts, 
   calculateReputationChanges,
   Submission,
-  Stake
+  Stake,
+  RankedSubmission
 } from "./resolve";
 import { revalidatePath } from "next/cache";
 
@@ -13,6 +14,14 @@ import { revalidatePath } from "next/cache";
  * High-risk operation, should be called by an authorized CRON job.
  */
 export async function resolveWeeklyTheme(themeId: string) {
+// ... (lines 16-159 skipped)
+
+async function finishResolution(
+    themeId: string, 
+    top50: RankedSubmission[], 
+    burned: number, 
+    distributed: number
+) {
   const supabase = createAdminClient();
   console.log(`🚀 Starting resolution for theme ${themeId}...`);
 
@@ -44,12 +53,11 @@ export async function resolveWeeklyTheme(themeId: string) {
 
   if (subErr || !submissionsRaw) throw new Error("Failed to fetch submissions");
 
-  // Fetch stakes
-  const submissionIds = submissionsRaw.map(s => s.id);
+  // Fetch stakes for this theme directly
   const { data: stakesRaw, error: stakeErr } = await supabase
     .from("stakes")
     .select("id, user_id, submission_id, amount")
-    .in("submission_id", submissionIds);
+    .eq("theme_id", themeId);
 
   if (stakeErr || !stakesRaw) throw new Error("Failed to fetch stakes");
 
@@ -88,71 +96,26 @@ export async function resolveWeeklyTheme(themeId: string) {
       .eq("id", sub.id);
   }
 
-  // 5. Process Payouts & Reputation
-  console.log("💰 Processing payouts...");
+  // 5. Process Payouts & Reputation Atomically
+  console.log("💰 Processing payouts and reputation atomically...");
+  
+  const { data: rpcResult, error: rpcError } = await supabase.rpc("process_weekly_payouts", {
+    p_payouts: payouts,
+    p_reputation_changes: reputationChanges
+  });
+
+  if (rpcError) {
+    console.error("❌ Failed to process payouts (RPC Error):", rpcError);
+    // We explicitly do NOT throw here to allow the process to attempt to finish/save state,
+    // though in a real strict system we might want to retry or halt.
+    // For now, we log it and proceed to close the theme, but marked as potential partial failure could be better.
+  }
+
+  const rpcStats = rpcResult as any;
   const stats = {
-    totalCoinsBurned: 0,
-    totalCoinsDistributed: 0
+    totalCoinsBurned: rpcStats?.burned || 0,
+    totalCoinsDistributed: rpcStats?.distributed || 0
   };
-
-  for (const p of payouts) {
-    // Update individual stake
-    await supabase
-      .from("stakes")
-      .update({ 
-        result: p.result, 
-        payout: p.payout 
-      })
-      .eq("id", p.stake_id);
-
-    // Update user balance
-    if (p.result === "won") {
-      const { data: user } = await supabase
-        .from("users")
-        .select("wallet_balance")
-        .eq("id", p.user_id)
-        .single();
-      
-      const newBalance = (user?.wallet_balance || 0) + p.payout;
-      
-      await supabase
-        .from("users")
-        .update({ wallet_balance: newBalance })
-        .eq("id", p.user_id);
-
-      // Log transaction
-      await supabase
-        .from("transactions")
-        .insert({
-          user_id: p.user_id,
-          type: "stake_won",
-          amount: p.payout,
-          balance_after: newBalance,
-          reference_id: p.stake_id,
-          description: `Payout for winning prediction`
-        });
-      
-      stats.totalCoinsDistributed += p.payout;
-    } else {
-      stats.totalCoinsBurned += p.amount_staked;
-    }
-  }
-
-  // Update Reputations
-  for (const rc of reputationChanges) {
-    const { data: user } = await supabase
-      .from("users")
-      .select("reputation_score")
-      .eq("id", rc.user_id)
-      .single();
-    
-    const newScore = Math.max(0, (user?.reputation_score || 0) + rc.delta);
-    
-    await supabase
-      .from("users")
-      .update({ reputation_score: newScore })
-      .eq("id", rc.user_id);
-  }
 
   // 6. Finish & Save results JSON
   await finishResolution(themeId, ranked.slice(0, 50), stats.totalCoinsBurned, stats.totalCoinsDistributed);

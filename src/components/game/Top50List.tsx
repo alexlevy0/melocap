@@ -21,7 +21,8 @@ interface Top50ListProps {
 }
 
 export function Top50List({ tracks }: Top50ListProps) {
-  const t = useTranslations("results");
+    const t = useTranslations("results");
+  const tCommon = useTranslations("common");
 
   if (tracks.length === 0) {
     return (
@@ -98,7 +99,7 @@ export function Top50List({ tracks }: Top50ListProps) {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="p-2 rounded-full hover:bg-white/10 text-slate-500 hover:text-primary-400 transition-colors"
-                    title={t("listenOnSpotify")}
+                    title={tCommon("listenOnSpotify")}
                 >
                     <ExternalLink className="w-4 h-4 md:w-5 h-5" />
                 </a>
