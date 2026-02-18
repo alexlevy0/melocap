@@ -45,7 +45,13 @@
     "rank": "#",
     "curator": "Curator",
     "reputation": "Reputation",
-    "predictions": "Wins"
+    "predictions": "Wins",
+    "tabs": {
+        "global": "Global",
+        "friends": "Friends"
+    },
+    "runners_up": "Runners Up",
+    "empty_friends": "Connect with friends to see their rankings here."
   },
   "results": {
     "title": "Drop #{week} Results",
@@ -95,6 +101,7 @@
       "submit": "Submit a track",
       "support": "Support this track",
       "conviction": "My conviction",
+      "change_track": "Change track",
       "balance": "My balance: {amount} MeloCoins",
       "listenOnSpotify": "Listen on Spotify",
       "staking_title": "Distribute your MeloCoins",
@@ -124,7 +131,11 @@
   "game": {
     "blocked": "Come back Friday 7PM!",
     "blockedSubtitle": "MeloCaps is active only on weekends.",
-    "nextDrop": "Next Drop:"
+    "nextDrop": "Next Drop:",
+    "search": {
+        "trending": "Trending on MeloCaps",
+        "added": "Added to Capsule"
+    }
   },
   "profile": {
     "title": "My Profile",

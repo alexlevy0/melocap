@@ -1,69 +1,77 @@
 import { useTranslations } from "next-intl";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar } from "@/components/ui/avatar";
+import { LeaderboardPodium } from "@/components/leaderboard/LeaderboardPodium";
+import { LeaderboardList } from "@/components/leaderboard/LeaderboardList";
+import { UserRankBar } from "@/components/leaderboard/UserRankBar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Users, Globe } from "lucide-react";
 
 export default function LeaderboardPage() {
   const t = useTranslations("leaderboard");
 
-  // Mock data
+  // Mock data - In real app, fetch from Supabase
   const leaders = [
-    { rank: 1, name: "Melomaniac", reputation: 1250, wins: 12, avatar: null },
-    { rank: 2, name: "BeatHunter", reputation: 1100, wins: 9, avatar: null },
-    { rank: 3, name: "SonicSurfer", reputation: 980, wins: 7, avatar: null },
-    { rank: 4, name: "GrooveMaster", reputation: 850, wins: 5, avatar: null },
-    { rank: 5, name: "VinylJunkie", reputation: 720, wins: 4, avatar: null },
+    { rank: 1, name: "Melomaniac", reputation: 12500, wins: 12, avatar_url: null, trend: "Neon Dreams" },
+    { rank: 2, name: "SilverFox", reputation: 8200, wins: 9, avatar_url: null, trend: "Cyber Love" },
+    { rank: 3, name: "BronzeBeat", reputation: 7900, wins: 7, avatar_url: null, trend: "Bass Drop" },
+    { rank: 4, name: "CryptoBeats", reputation: 4200, wins: 5, avatar_url: null, trend: "Solar Power" },
+    { rank: 5, name: "LunaTick", reputation: 3950, wins: 4, avatar_url: null, trend: "Midnight City" },
+    { rank: 6, name: "PixelPusher", reputation: 3820, wins: 3, avatar_url: null, trend: "Ghost" },
+    { rank: 7, name: "SonicWave", reputation: 3400, wins: 2, avatar_url: null, trend: "Levitating" },
+    { rank: 8, name: "BeatBoxer", reputation: 3150, wins: 2, avatar_url: null, trend: "Blinding Lights" },
+    { rank: 9, name: "VibeChecker", reputation: 2900, wins: 1, avatar_url: null, trend: "Good 4 U" },
   ];
 
-  const getRankBadge = (rank: number) => {
-    if (rank === 1) return <Badge variant="glow" className="text-sm px-3 py-1">🥇 #1</Badge>;
-    if (rank === 2) return <Badge variant="secondary" className="text-sm px-3 py-1">🥈 #2</Badge>;
-    if (rank === 3) return <Badge variant="secondary" className="text-sm px-3 py-1">🥉 #3</Badge>;
-    return <span className="font-display font-medium text-slate-400">#{rank}</span>;
+  const currentUser = {
+    rank: 42,
+    name: "You",
+    reputation: 1200,
+    avatar_url: null,
+    trend: "Stay"
   };
 
   return (
-    <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
-      <header className="text-center space-y-2">
-        <h1 className="text-3xl font-display font-bold gradient-text-primary">
+    <main className="max-w-2xl mx-auto px-4 pb-32 space-y-6">
+      
+      {/* Header */}
+      <header className="flex items-center justify-between pt-4">
+        <h1 className="text-2xl font-display font-bold text-white">
           {t("title")}
         </h1>
-        <p className="text-slate-400">{t("subtitle")}</p>
+        {/* Filter / Sort can go here */}
       </header>
 
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/5">
-                <th className="p-4 font-medium text-slate-400">{t("rank")}</th>
-                <th className="p-4 font-medium text-slate-400">{t("curator")}</th>
-                <th className="p-4 font-medium text-slate-400 text-right">{t("reputation")}</th>
-                <th className="p-4 font-medium text-slate-400 text-right">{t("predictions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaders.map((leader) => (
-                <tr key={leader.rank} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-4">
-                    {getRankBadge(leader.rank)}
-                  </td>
-                  <td className="p-4 flex items-center gap-3">
-                    <Avatar fallback={leader.name} />
-                    <span className="font-bold text-white">{leader.name}</span>
-                  </td>
-                  <td className="p-4 text-right font-mono text-accent-400 font-bold">
-                    {leader.reputation}
-                  </td>
-                  <td className="p-4 text-right text-slate-300">
-                    {leader.wins}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {/* Tabs */}
+      <Tabs defaultValue="global" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/5 border border-white/5 p-1 rounded-full">
+          <TabsTrigger value="global" className="rounded-full data-[state=active]:bg-primary-600 data-[state=active]:text-white">
+            <Globe className="w-4 h-4 mr-2" /> {t("tabs.global")}
+          </TabsTrigger>
+          <TabsTrigger value="friends" className="rounded-full data-[state=active]:bg-primary-600 data-[state=active]:text-white">
+            <Users className="w-4 h-4 mr-2" /> {t("tabs.friends")}
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="global" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <LeaderboardPodium top3={leaders.slice(0, 3)} />
+          
+          <div className="px-2 pb-2">
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-2">{t("runners_up")}</h3>
+            <LeaderboardList runnersUp={leaders.slice(3)} />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="friends">
+          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
+              <Users className="w-8 h-8 text-slate-600" />
+            </div>
+            <p className="text-slate-400">{t("empty_friends")}</p>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Sticky User Rank */}
+      <UserRankBar userRank={currentUser} />
     </main>
   );
 }

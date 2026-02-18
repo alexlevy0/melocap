@@ -44,7 +44,13 @@
     "rank": "#",
     "curator": "Curateur",
     "reputation": "Réputation",
-    "predictions": "Victoires"
+    "predictions": "Victoires",
+    "tabs": {
+        "global": "Global",
+        "friends": "Amis"
+    },
+    "runners_up": "Poursuivants",
+    "empty_friends": "Connecte-toi avec tes amis pour voir leur classement ici."
   },
   "results": {
     "title": "Résultats Drop #{week}",
@@ -94,6 +100,7 @@
       "submit": "Soumettre un titre",
       "support": "Soutenir ce titre",
       "conviction": "Ma conviction",
+      "change_track": "Changer de titre",
       "balance": "Mon solde : {amount} MeloCoins",
       "listenOnSpotify": "Écouter sur Spotify",
       "staking_title": "Répartis tes MeloCoins",
@@ -123,7 +130,11 @@
   "game": {
     "blocked": "Revenez vendredi 19h !",
     "blockedSubtitle": "MeloCaps est actif uniquement le week-end.",
-    "nextDrop": "Prochain Drop :"
+    "nextDrop": "Prochain Drop :",
+    "search": {
+        "trending": "Tendances sur MeloCaps",
+        "added": "Ajouté à la Capsule"
+    }
   },
   "profile": {
     "title": "Mon Profil",

@@ -133,13 +133,26 @@ export default async function PodPage({ params }: PodPageProps) {
 
              {/* Action Area */}
              <div className="flex items-center gap-4">
-                 {theme.status === 'open' && !userSubmission && (
-                     <SubmitTrackDialog podId={podId} />
-                 )}
-                 {userSubmission && (
-                      <div className="px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full text-green-400 text-sm font-medium flex items-center gap-2">
-                          ✓ {t("slots.submitted")}
-                      </div>
+                 {theme.status === 'open' && (
+                     <SubmitTrackDialog 
+                        podId={podId} 
+                        initialTrack={userSubmission ? {
+                            id: userSubmission.spotify_track_id,
+                            name: userSubmission.track_name,
+                            artists: [{ id: 'mock', name: userSubmission.artist_name, external_urls: { spotify: '' } }],
+                            album: { 
+                                id: 'mock', 
+                                name: 'Unknown Album', 
+                                images: userSubmission.album_image_url ? [{ url: userSubmission.album_image_url, height: 640, width: 640 }] : [], 
+                                release_date: '', 
+                                external_urls: { spotify: '' } 
+                            },
+                            duration_ms: 0,
+                            preview_url: userSubmission.preview_url,
+                            external_urls: { spotify: userSubmission.spotify_uri || "" },
+                            popularity: 0
+                        } : undefined}
+                     />
                  )}
              </div>
         </div>

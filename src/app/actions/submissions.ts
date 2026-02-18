@@ -68,26 +68,28 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
     .eq("user_id", user.id)
     .maybeSingle();
 
+  // 3. Check if track is already taken in this pod (excluding current user's submission if any)
+  let duplicateQuery = supabase
+    .from("submissions")
+    .select("id, user_id")
+    .eq("pod_id", podId)
+    .eq("spotify_track_id", track.spotify_track_id);
+
   if (existingSubmission) {
-    throw new Error(t("alreadyInPod"));
+    duplicateQuery = duplicateQuery.neq("user_id", user.id);
   }
 
-  // 3. Check if track is already taken in this pod
-  const { data: duplicateTrack } = await supabase
-    .from("submissions")
-    .select("id")
-    .eq("pod_id", podId)
-    .eq("spotify_track_id", track.spotify_track_id)
-    .maybeSingle();
+  const { data: duplicateTrack } = await duplicateQuery.maybeSingle();
 
   if (duplicateTrack) {
     throw new Error(t("trackAlreadyTaken"));
   }
 
-  // 4. Insert submission
+  // 4. Upsert submission
   const { error } = await supabase
     .from("submissions")
-    .insert({
+    .upsert({
+      id: existingSubmission?.id, // If exists, update this ID
       pod_id: podId,
       user_id: user.id,
       spotify_track_id: track.spotify_track_id,
@@ -96,7 +98,10 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
       album_image_url: track.album_image_url,
       preview_url: track.preview_url,
       spotify_uri: track.spotify_uri,
-    });
+      updated_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
 
   if (error) {
     console.error("Submit Track Error:", error);

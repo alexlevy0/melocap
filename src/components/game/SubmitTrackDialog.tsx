@@ -20,12 +20,13 @@ import { toast } from "sonner";
 
 interface SubmitTrackDialogProps {
   podId: string;
+  initialTrack?: SpotifyTrack | null;
 }
 
-export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
+export function SubmitTrackDialog({ podId, initialTrack }: SubmitTrackDialogProps) {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
-  const [selectedTrack, setSelectedTrack] = useState<SpotifyTrack | null>(null);
+  const [selectedTrack, setSelectedTrack] = useState<SpotifyTrack | null>(initialTrack || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleTrackSelect = (track: SpotifyTrack) => {
@@ -50,6 +51,10 @@ export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
       
       toast.success(t("pod.submit.success"));
       setOpen(false);
+      // Keep the selected track if it was an edit, or reset? 
+      // Providing feedback that it's done. 
+      // If we are editing, we probably want to keep showing the new track if opened again, 
+      // but the parent will re-render with new initialTrack anyway.
       setSelectedTrack(null);
     } catch (error: any) {
       console.error(error);
@@ -64,12 +69,12 @@ export function SubmitTrackDialog({ podId }: SubmitTrackDialogProps) {
       <DialogTrigger asChild>
         <Button size="lg" className="w-full md:w-auto shadow-xl shadow-primary-500/20">
           <Send className="mr-2 w-4 h-4" />
-          {t("pod.actions.submit")}
+          {initialTrack ? t("pod.actions.change_track") : t("pod.actions.submit")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl bg-surface-900 border-white/10 text-white">
         <DialogHeader>
-          <DialogTitle>{t("pod.actions.submit")}</DialogTitle>
+          <DialogTitle>{initialTrack ? t("pod.actions.change_track") : t("pod.actions.submit")}</DialogTitle>
           <DialogDescription>
             {t("pod.submit.description")}
           </DialogDescription>
