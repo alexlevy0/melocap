@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { SubmitTrackDialog } from "@/components/game/SubmitTrackDialog";
 import { PodMembers } from "@/components/game/PodMembers";
+import { StakingZone } from "@/components/game/StakingZone";
 
 interface PodPageProps {
     params: Promise<{
@@ -89,6 +90,21 @@ export default async function PodPage({ params }: PodPageProps) {
       .select("*")
       .eq("pod_id", podId);
 
+  // 6. Get user wallet balance
+  const { data: userData } = await supabase
+    .from("users")
+    .select("wallet_balance")
+    .eq("id", user.id)
+    .single();
+
+  // 7. Get user's existing stakes in this pod
+  const submissionIds = (allSubmissions || []).map(s => s.id);
+  const { data: userStakes } = await supabase
+    .from("stakes")
+    .select("*")
+    .eq("user_id", user.id)
+    .in("submission_id", submissionIds);
+
   // Type-safe join handling
   const theme = Array.isArray(pod.theme) ? pod.theme[0] : pod.theme;
 
@@ -128,10 +144,21 @@ export default async function PodPage({ params }: PodPageProps) {
              </div>
         </div>
 
-        {/* Pod Grid */}
         <div className="w-full max-w-5xl">
             <PodMembers members={safeMembers || []} submissions={allSubmissions || []} />
         </div>
+
+        {/* Staking Area */}
+        {theme.status === 'open' && userSubmission && (
+             <div className="w-full max-w-5xl animate-in slide-in-from-bottom duration-700">
+                <StakingZone 
+                    podId={podId}
+                    submissions={allSubmissions || []}
+                    initialStakes={userStakes || []}
+                    walletBalance={userData?.wallet_balance || 0}
+                />
+             </div>
+        )}
 
         {/* Debug Info (Temporary) */}
         {/* <pre className="text-xs text-slate-800 mt-10">

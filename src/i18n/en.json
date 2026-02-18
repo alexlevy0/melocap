@@ -90,7 +90,15 @@
       "support": "Support this track",
       "conviction": "My conviction",
       "balance": "My balance: {amount} MeloCoins",
-      "listenOnSpotify": "Listen on Spotify"
+      "listenOnSpotify": "Listen on Spotify",
+      "staking_title": "Distribute your MeloCoins",
+      "staking_description": "Allocate your coins to the tracks you believe will rank high. You can change your predictions until the deadline.",
+      "save_predictions": "Save my predictions",
+      "save_predictions_success": "Predictions saved successfully!",
+      "saving": "Saving...",
+      "remaining_balance": "Remaining: {amount} MeloCoins",
+      "total_allocated": "Total allocated: {amount}",
+      "stake_amount": "{amount}"
     },
     "status": {
       "open": "The Fever — Submissions open",

@@ -89,7 +89,15 @@
       "support": "Soutenir ce titre",
       "conviction": "Ma conviction",
       "balance": "Mon solde : {amount} MeloCoins",
-      "listenOnSpotify": "Écouter sur Spotify"
+      "listenOnSpotify": "Écouter sur Spotify",
+      "staking_title": "Répartis tes MeloCoins",
+      "staking_description": "Mise sur les titres que tu vois monter au sommet cette semaine. Tu peux modifier tes choix jusqu'au verrouillage.",
+      "save_predictions": "Enregistrer mes choix",
+      "save_predictions_success": "Choix enregistrés avec succès !",
+      "saving": "Enregistrement...",
+      "remaining_balance": "Restant : {amount} MeloCoins",
+      "total_allocated": "Total alloué : {amount}",
+      "stake_amount": "{amount}"
     },
     "status": {
       "open": "La Fièvre — Soumissions ouvertes",
