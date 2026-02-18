@@ -39,7 +39,7 @@ export async function resolveWeeklyTheme(themeId: string) {
   // 3. Fetch submissions
   const { data: submissionsRaw, error: subErr } = await supabase
     .from("submissions")
-    .select("id, user_id, pod_id, track_name, artist_name, created_at")
+    .select("id, user_id, pod_id, track_name, artist_name, album_image_url, spotify_uri, created_at")
     .in("pod_id", podIds);
 
   if (subErr || !submissionsRaw) throw new Error("Failed to fetch submissions");
@@ -60,6 +60,8 @@ export async function resolveWeeklyTheme(themeId: string) {
     pod_id: s.pod_id,
     track_name: s.track_name,
     artist_name: s.artist_name,
+    album_image_url: s.album_image_url,
+    spotify_uri: s.spotify_uri,
     created_at: s.created_at
   }));
 

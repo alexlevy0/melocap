@@ -9,6 +9,8 @@ export interface Submission {
   pod_id: string;
   track_name: string;
   artist_name: string;
+  album_image_url?: string | null;
+  spotify_uri?: string | null;
   created_at: string;
 }
 

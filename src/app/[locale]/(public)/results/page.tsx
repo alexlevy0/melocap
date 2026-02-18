@@ -1,52 +1,105 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { createClient } from "@/lib/supabase/server";
+import { PerformanceSummary } from "@/components/game/PerformanceSummary";
+import { Top50List } from "@/components/game/Top50List";
 
-export default function ResultsPage() {
-  const t = useTranslations("results");
+export default async function ResultsPage() {
+  const t = await getTranslations("results");
+  const supabase = await createClient();
 
-  // Mock data for Top 50 (just top 5 for demo)
-  const topTracks = [
-    { rank: 1, title: "Midnight City", artist: "M83", score: 450, backers: 42 },
-    { rank: 2, title: "Get Lucky", artist: "Daft Punk", score: 410, backers: 38 },
-    { rank: 3, title: "Instant Crush", artist: "Daft Punk", score: 390, backers: 35 },
-    { rank: 4, title: "Safe and Sound", artist: "Capital Cities", score: 350, backers: 30 },
-    { rank: 5, title: "Electric Feel", artist: "MGMT", score: 320, backers: 28 },
-  ];
+  // 1. Get the latest finished theme
+  const { data: theme } = await supabase
+    .from("weekly_themes")
+    .select("*")
+    .eq("status", "finished")
+    .order("resolved_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (!theme) {
+    return (
+      <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-8 flex flex-col items-center justify-center min-h-[60vh]">
+        <h1 className="text-3xl font-display font-bold gradient-text-secondary mb-4">
+          {t("title", { week: "?" })}
+        </h1>
+        <p className="text-slate-400">{t("noResults")}</p>
+      </main>
+    );
+  }
+
+  // 2. Get user info for performance
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  let personalStats = {
+    earned: 0,
+    burned: 0,
+    reputationDelta: 0,
+    successRate: 0
+  };
+
+  if (user) {
+    // Fetch user stakes for pods belonging to this theme
+    // Join: stakes -> submissions -> pods -> theme
+    const { data: userStakes } = await supabase
+      .from("stakes")
+      .select(`
+        id,
+        amount,
+        payout,
+        result,
+        submission:submissions!inner (
+          pod:pods!inner (
+            theme_id
+          )
+        )
+      `)
+      .eq("user_id", user.id)
+      .eq("submission.pod.theme_id", theme.id);
+
+    if (userStakes && userStakes.length > 0) {
+      personalStats.earned = userStakes.reduce((sum, s) => sum + (s.payout || 0), 0);
+      personalStats.burned = userStakes.reduce((sum, s) => sum + s.amount, 0);
+      
+      const wins = userStakes.filter(s => s.result === "won").length;
+      personalStats.successRate = wins / userStakes.length;
+      
+      // Reputation delta: +10 per win, -5 per loss
+      const losses = userStakes.length - wins;
+      personalStats.reputationDelta = (wins * 10) - (losses * 5);
+    }
+  }
+
+  // 3. Extract Top 50 from JSON
+  const topTracks = (theme.results_json as any)?.top50 || [];
 
   return (
-    <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
+    <main className="max-w-7xl mx-auto p-4 md:p-8 space-y-12">
       <header className="text-center space-y-2">
-        <h1 className="text-3xl font-display font-bold gradient-text-secondary">
-          {t("title", { week: 42 })}
+        <h1 className="text-4xl md:text-5xl font-display font-black gradient-text-secondary tracking-tight">
+          {t("title", { week: theme.week_number })}
         </h1>
-        <p className="text-slate-400">{t("dropNumber", { number: 42 })}</p>
+        <p className="text-slate-400 font-medium uppercase tracking-widest text-sm">
+            {theme.title} — {new Date(theme.resolved_at!).toLocaleDateString()}
+        </p>
       </header>
 
-      <div className="space-y-4">
-        {topTracks.map((track) => (
-          <div key={track.rank} className="glass rounded-2xl p-4 flex items-center gap-4 hover:scale-[1.01] transition-transform">
-            <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center font-display font-bold text-2xl text-white/20">
-              #{track.rank}
-            </div>
-            
-            {/* Fake Album Art */}
-            <div className="w-16 h-16 rounded-lg bg-surface-800 flex-shrink-0 animate-pulse bg-gradient-to-br from-surface-700 to-surface-800" />
+      {user && (
+        <section className="space-y-6">
+          <h2 className="text-xl font-display font-bold text-white px-1">
+            {t("myPredictions")}
+          </h2>
+          <PerformanceSummary 
+            earned={personalStats.earned}
+            burned={personalStats.burned}
+            reputationDelta={personalStats.reputationDelta}
+            successRate={personalStats.successRate}
+          />
+        </section>
+      )}
 
-            <div className="flex-grow min-w-0">
-              <h3 className="font-bold text-white truncate">{track.title}</h3>
-              <p className="text-sm text-slate-400 truncate">{track.artist}</p>
-            </div>
-
-            <div className="text-right flex-shrink-0">
-              <p className="font-bold text-secondary-400">{t("score", { score: track.score })}</p>
-              <p className="text-xs text-slate-500">{t("backers", { count: track.backers })}</p>
-            </div>
-          </div>
-        ))}
-        
-        <div className="text-center text-slate-500 py-8 italic">
-          {t("moreTracks", { count: 45 })}
-        </div>
-      </div>
+      <section className="pt-4">
+        <Top50List tracks={topTracks} />
+      </section>
     </main>
   );
 }
