@@ -3,7 +3,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAdmin } from "@/lib/auth/admin-check";
-import { ThemeStatus } from "@/types/database";
+import type { Enums } from "@/types/database";
+
+type ThemeStatus = Enums<"theme_status">;
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -17,8 +19,8 @@ export async function createTheme(formData: FormData) {
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const weekNumber = parseInt(formData.get("week_number") as string);
-  const year = parseInt(formData.get("year") as string);
+  const weekNumber = Number.parseInt(formData.get("week_number") as string, 10);
+  const year = Number.parseInt(formData.get("year") as string, 10);
 
   if (!title || !weekNumber || !year) {
     throw new Error("Missing required fields");

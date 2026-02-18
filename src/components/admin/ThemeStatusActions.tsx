@@ -1,7 +1,9 @@
 "use client";
 
 import { useTransition } from "react";
-import { ThemeStatus } from "@/types/database";
+import type { Enums } from "@/types/database";
+
+type ThemeStatus = Enums<"theme_status">;
 import { updateThemeStatus } from "@/app/actions/themes";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";

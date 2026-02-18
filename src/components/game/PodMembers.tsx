@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { getTranslations } from "next-intl/server";
 import { User } from "lucide-react";
 
+import { Tables } from "@/types/database";
+
 interface PodMember {
   user_id: string;
   joined_at: string;
@@ -14,7 +16,7 @@ interface PodMember {
 
 interface PodMembersProps {
   members: PodMember[];
-  submissions?: any[]; // We will type this properly with Database Row type
+  submissions?: Tables<"submissions">[];
 }
 
 export async function PodMembers({ members, submissions = [] }: PodMembersProps) {

@@ -10,6 +10,7 @@ const cardVariants = cva(
         default: "shadow-xl shadow-black/20",
         hover: "hover:bg-surface-800/60 hover:border-white/10 hover:shadow-2xl hover:shadow-primary-500/5 hover:-translate-y-1",
         flat: "bg-transparent border-none shadow-none",
+        glass: "bg-white/5 border-white/10 backdrop-blur-md shadow-lg",
       },
       padding: {
         none: "p-0",

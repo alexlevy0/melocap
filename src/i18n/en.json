@@ -12,6 +12,10 @@
     "profile": "Profile"
   },
   "home": {
+    "hero": {
+      "title": "MeloCaps",
+      "subtitle": "Predict the hits"
+    },
     "cta": {
       "participate": "Join a Pod",
       "discover": "See Results"

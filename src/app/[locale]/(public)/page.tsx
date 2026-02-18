@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { ArrowRight, Hash, TrendingUp, Coins } from "lucide-react";
+import { ArrowRight, Hash, TrendingUp, Coins, type LucideIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Countdown } from "@/components/ui/countdown";
@@ -112,7 +112,7 @@ function StatCard({
   label,
   delay,
 }: {
-  icon: any;
+  icon: LucideIcon;
   value: string;
   label: string;
   delay: number;

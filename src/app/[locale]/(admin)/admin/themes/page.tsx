@@ -4,15 +4,15 @@ import { getThemes } from "@/app/actions/themes"; // We need to fix the import i
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Plus, Calendar, Lock, Unlock, CheckCircle } from "lucide-react";
+import { Plus, Calendar, Lock, Unlock, CheckCircle, type LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Database } from "@/types/database";
+import { Enums, Tables } from "@/types/database";
 import { ThemeStatusActions } from "@/components/admin/ThemeStatusActions";
 
-type ThemeStatus = Database["public"]["Enums"]["theme_status"];
+type ThemeStatus = Enums<"theme_status">;
 
 // Map status to colors/icons
-const statusConfig: Record<ThemeStatus, { color: string; icon: any }> = {
+const statusConfig: Record<ThemeStatus, { color: string; icon: LucideIcon }> = {
   upcoming: { color: "text-slate-400 bg-slate-500/10", icon: Calendar },
   open: { color: "text-green-400 bg-green-500/10 w-full", icon: Unlock },
   locked: { color: "text-orange-400 bg-orange-500/10", icon: Lock },
@@ -41,7 +41,7 @@ export default async function AdminThemesPage() {
       </div>
 
       <div className="grid gap-4">
-        {themes.map((theme: any) => { 
+        {themes.map((theme: Tables<"weekly_themes">) => { 
            const status = statusConfig[theme.status as ThemeStatus] || statusConfig.upcoming;
            const Icon = status.icon;
 

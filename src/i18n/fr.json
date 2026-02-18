@@ -11,6 +11,10 @@
     "profile": "Profil"
   },
   "home": {
+    "hero": {
+      "title": "MeloCaps",
+      "subtitle": "Dénichez les hits"
+    },
     "cta": {
       "participate": "Rejoindre un Pod",
       "discover": "Voir les résultats"
