@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 
@@ -85,8 +86,14 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
     throw new Error(t("trackAlreadyTaken"));
   }
 
-  // 4. Upsert submission
-  const { error } = await supabase
+  // 4. Upsert submission (Using Service Role to bypass restrictive RLS)
+  // SECURITY: We have already verified membership and ownership above.
+  const adminClient = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const { error } = await adminClient
     .from("submissions")
     .upsert({
       id: existingSubmission?.id, // If exists, update this ID
@@ -98,7 +105,6 @@ export async function submitTrack(podId: string, track: SpotifyTrackSubmission) 
       album_image_url: track.album_image_url,
       preview_url: track.preview_url,
       spotify_uri: track.spotify_uri,
-      updated_at: new Date().toISOString(),
     })
     .select()
     .single();

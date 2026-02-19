@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+/* Mobile Touch Optimization */
+@media (max-width: 768px) {
+  [role="slider"] {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
 /* ============================================================
    MeloCaps — Global Styles
    Dark Mode by default. Palette: Violet / Orange / Cyan

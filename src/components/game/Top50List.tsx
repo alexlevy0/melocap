@@ -7,13 +7,13 @@ import { cn } from "@/lib/utils";
 
 interface Top50Track {
   id: string;
-  rank: number;
+  global_rank: number;
   track_name: string;
   artist_name: string;
   global_score: number;
   backer_count: number;
-  album_image_url?: string;
-  spotify_uri?: string;
+  album_image_url?: string | null;
+  spotify_uri?: string | null;
 }
 
 interface Top50ListProps {
@@ -45,19 +45,19 @@ export function Top50List({ tracks }: Top50ListProps) {
             key={track.id} 
             className={cn(
                 "glass group rounded-2xl p-3 md:p-4 flex items-center gap-4 transition-all hover:bg-white/5",
-                track.rank === 1 && "border-secondary-500/30 bg-secondary-950/10",
-                track.rank === 2 && "border-slate-400/30 bg-slate-900/10",
-                track.rank === 3 && "border-orange-800/30 bg-orange-950/10"
+                track.global_rank === 1 && "border-secondary-500/30 bg-secondary-950/10",
+                track.global_rank === 2 && "border-slate-400/30 bg-slate-900/10",
+                track.global_rank === 3 && "border-orange-800/30 bg-orange-950/10"
             )}
           >
             {/* Rank Indicator */}
             <div className={cn(
                 "flex-shrink-0 w-10 md:w-12 h-10 md:h-12 flex items-center justify-center font-display font-black text-xl md:text-2xl",
-                track.rank === 1 ? "text-secondary-400" : 
-                track.rank === 2 ? "text-slate-400" : 
-                track.rank === 3 ? "text-orange-600" : "text-white/10"
+                track.global_rank === 1 ? "text-secondary-400" : 
+                track.global_rank === 2 ? "text-slate-400" : 
+                track.global_rank === 3 ? "text-orange-600" : "text-white/10"
             )}>
-              #{track.rank}
+              #{track.global_rank}
             </div>
 
             {/* Album Art */}

@@ -40,7 +40,7 @@ export function StakeSlider({
         step={1}
         onValueChange={(vals: number[]) => onChange(vals[0])}
         disabled={disabled}
-        className="py-2"
+        className="py-4 touch-none" 
       />
     </div>
   );

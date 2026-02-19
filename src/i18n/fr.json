@@ -173,6 +173,7 @@
   },
   "common": {
     "loading": "Chargement...",
+    "back": "Retour",
     "save": "Enregistrer",
     "cancel": "Annuler",
     "close": "Fermer",

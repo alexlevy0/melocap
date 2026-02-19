@@ -77,7 +77,7 @@ export function TrackSearch({ onSelect, selectedTrackId, placeholder }: TrackSea
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={placeholder || t("search")}
+          placeholder={placeholder || t("common.search")}
           className="relative w-full bg-surface-800/80 backdrop-blur-md border border-white/5 rounded-full py-4 pl-12 pr-12 text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all shadow-lg"
         />
         {loading ? (
@@ -193,7 +193,7 @@ export function TrackSearch({ onSelect, selectedTrackId, placeholder }: TrackSea
         {debouncedQuery && !loading && results.length === 0 && (
           <div className="flex flex-col items-center justify-center py-12 text-slate-500 space-y-2">
             <Search className="w-8 h-8 opacity-20" />
-            <span className="text-sm">{t("noTracksFound")}</span>
+            <span className="text-sm">{t("common.noTracksFound")}</span>
           </div>
         )}
       </div>
